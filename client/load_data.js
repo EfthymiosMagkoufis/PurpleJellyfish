@@ -9,7 +9,7 @@ const loadData = async () => {
             date = new Date().toISOString();
             obs.date = date
             console.log(obs);
-            // postdata();
+            postdata(obs);
           };
           // console.log(creategeojson(observations.results));
        }
