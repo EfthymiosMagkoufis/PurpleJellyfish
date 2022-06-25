@@ -1,12 +1,12 @@
 const loadData = async () => {
     try {
-       let fetched = await fetch("observed_data\final_data.json");
+       let fetched = await fetch("src/final_data.json");
        if(fetched) {
          // console.log(fetched);
           let observations = await fetched.json();
           console.log(observations);
           for (let obs of observations.data) {
-            // postdata(obs);
+            postdata(obs);
           };
           // console.log(creategeojson(observations.results));
        }
