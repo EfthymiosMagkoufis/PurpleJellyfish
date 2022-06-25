@@ -15,18 +15,11 @@ app.use(
   })
 )
 
-// app.get('/', (req, res) => {
-//   res.json({ info: 'Node.js, Express, and Posgres API'})
-// });
-
-app.get('/allObs', db.getObservations);
-app.post('/Obs', db.createObservation);
-app.delete('/obs/:id', db.deleteObservation);
-
-// app.listen(port, () => {
-//   console.log(`App running on port ${port}.`);
-// });
 const server = app.listen(port, () => {
   const port = server.address().port;
   console.log( `App is working on port ${port}`);
 });
+
+app.get('/allObs', db.getObservations);
+app.post('/Obs', db.createObservation);
+app.delete('/obs/:id', db.deleteObservation);

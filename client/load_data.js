@@ -6,7 +6,10 @@ const loadData = async () => {
           let observations = await fetched.json();
           console.log(observations);
           for (let obs of observations.data) {
-            postdata(creategeojson(obs));
+            date = new Date().toISOString();
+            obs.date = date
+            console.log(obs);
+            // postdata();
           };
           // console.log(creategeojson(observations.results));
        }

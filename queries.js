@@ -27,10 +27,11 @@ const getObservations = (req,res) =>{
 }
 
 const createObservation = (req, res) => {
-  const { name, comment, longitude, latitude, obsDate } = req.body
+  const { name, comment, longitude, latitude, obsDate, date } = req.body
 
   pool.query('INSERT INTO observations (name, comment, longitude, latitude, obsDate, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [name, comment, longitude, latitude, obsDate, date], (error, results) => {
     if (error) {
+      console.log("error");
       throw error
     }
     res.status(201).send(`Observation added with ID: ${results.rows[0].id}`)
