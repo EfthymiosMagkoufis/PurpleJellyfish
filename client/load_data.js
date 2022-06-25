@@ -6,7 +6,7 @@ const loadData = async () => {
           let observations = await fetched.json();
           console.log(observations);
           for (let obs of observations.data) {
-            postdata(obs);
+            postdata(creategeojson(obs));
           };
           // console.log(creategeojson(observations.results));
        }
