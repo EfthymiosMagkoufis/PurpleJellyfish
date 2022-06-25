@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>PurpleJellyfish</title>
+    <link rel="icon" type="image/x-icon" href="./img/jellyfish_icon.ico">
+  </head>
+  <link  href='style.css'  rel='stylesheet'/>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+  <script src="https://kit.fontawesome.com/81a905b0b2.js" crossorigin="anonymous"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+  <body>
+      <nav>
+        <img src="./img/jellyfish.jpg" class="brand-img">
+        <a id="brand" href="/">PurpleJellyfish</a>
+        <button type="button" name="button" class="nav-btns" id="add-com"><i class="fas fa-plus"></i>Observation</button>
+      </nav>
+      <div class="container">
+        <div class="map" id="map"></div>
+        <div class="vis-controler">
+          <a class="vis-btns" id="heatmap-btn">Heatmap</a>
+          <label class="switch">
+            <input type="checkbox" checked id="vis-switch">
+            <span class="slider round"></span>
+          </label>
+          <a class="vis-btns" id="cluster-btn">Clusters</a>
+        </div>
+        <div class="timeline-controler">
+            <button type="button" class="play-pause" id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
+            <button type="button" class="play-pause" id="pause"><i class="fa fa-pause" aria-hidden="true"></i></button>
+            <input type="text" class="timeline-date" id="timeline-date" placeholder="2022-5-13">
+            <br><span class="timeline-text">Day 1: 10 Obs</span>
+        </div>
+        <div class="select-tab">
+          <i class="fa fa-times" aria-hidden="true" id="comment-stab-close"></i>
+          <button type="button" class="select-btn" id="loc-on-map">Select a place on map</button>
+          <button type="button" class="select-btn" id="geo-loc">Use my location</button>
+        </div>
+        <div class="comment-form">
+          <i class="fa fa-times" aria-hidden="true" id="comment-form-close"></i>
+          <div class="form-title">Write your GeoComment here!</div>
+          <form>
+              <textarea type="text" id="your-name" name="y-name" placeholder="nickname" resize="none"></textarea>
+              <textarea type="text" id="your-comment" name="y-com" placeholder="comment..."></textarea>
+              <label id="date-label" for="y-date">Observation Date</label>
+              <input type="date" id="your-date" name="y-date"></input>
+              <!-- <div class="choose_img">
+                  <span>Upoload an image <i class="fa fa-camera" aria-hidden="true"></i></span>
+                  <input name="Select img" type="file"  accept="image/*" id="img-upload"/>
+              </div> -->
+              <button type="button" name="upload" id="upload-btn">Upload</button>
+          </form>
+        </div>
+      </div>
+  </body>
+  <script src="./load_data.js"></script>
+  <script src="./src/api.js"></script>
+  <script src="./src/app.js"></script>
+  <script src="./src/listeners.js"></script>
+  <script src="./src/cluster.js"></script>
+  <script src="./src/heatmap.js"></script>
+</html>
