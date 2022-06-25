@@ -1,6 +1,6 @@
 const getData = async () => {
     try {
-       let fetched = await fetch("http://localhost:3000/allObs");
+       let fetched = await fetch("https://purplejellyfish.herokuapp.com/allObs");
        if(fetched) {
            let read = await fetched.json()
            console.log(read.features);
@@ -17,7 +17,7 @@ const getData = async () => {
 
 
 const postData = async (obs) => {
-  fetch("http://localhost:3000/obs/", {
+  fetch("https://purplejellyfish.herokuapp.com/", {
       method: "POST",
       body: JSON.stringify(obs),
       headers: {

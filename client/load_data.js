@@ -1,9 +1,10 @@
 const loadData = async () => {
     try {
-       let fetched = await fetch("client/load_data.js");
+       let fetched = await fetch("observed_data\final_data.json");
        if(fetched) {
          // console.log(fetched);
           let observations = await fetched.json();
+          console.log(observations);
           for (let obs of observations.data) {
             // postdata(obs);
           };
@@ -38,7 +39,7 @@ const creategeojson = (data) => {
 
 
 const postdata = async (obs) => {
-  fetch("https://localhost:3000/Obs/", {
+  fetch("https://purplejellyfish.herokuapp.com/Obs/", {
   // fetch("http://localhost:3000/Obs/", {
       method: "POST",
       body: JSON.stringify(obs),
