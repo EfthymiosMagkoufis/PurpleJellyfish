@@ -32,6 +32,8 @@ map.on('load', () =>{
     let position = [user_lon,user_lat];
     console.log(position);
   });
+  document.getElementById('info-btn').style.visibility = "visible";
+  document.getElementById('download-btn').style.visibility = "visible";
 
   let data = getData();
 });
@@ -54,6 +56,8 @@ displayDataonMap = (data) => {
   map.fitBounds(bounds, {
     padding: 100
   });
+
+
 };
 
 
@@ -62,12 +66,16 @@ let date2 = new Date('2022-05-25');
 if (date1 > date2) {
   console.log(true);
 }else if (date2 > date1) {
-  console.log(false);
+  // console.log(false);
 }
 //-------------
 
 let activeComForm = false;
 const markerList = [];
+const db_data_sort = [];
+const db_data_sort_dates = [];
+let timeInterval = null;
+let intervalPointer = 0;
 // find location and display a marker to map
 
 const form_visibility = (a) =>{
@@ -175,4 +183,98 @@ const uploadObservation = () => {
   comment.value = '';
   name.value = '';
   document.getElementById('add-com').disabled = false;
+}
+
+
+// timeline Visualization
+
+const pre_timeVisualization = (data) => {
+  data.features = data.features.sort((a, b) => new Date(a.properties.date) - new Date(b.properties.date) );
+
+  for (let feature of data.features) {
+    db_data_sort_dates.push(feature.properties.date);
+  }
+  db_data_sort.push(data);
+  let temp_dates = [];
+  temp_dates.push(db_data_sort_dates[0]);
+  for (let i in db_data_sort_dates) {
+    if (temp_dates[temp_dates.length-1] !== db_data_sort_dates[i]) {
+      temp_dates.push(db_data_sort_dates[i]);
+    }
+  }
+  db_data_sort_dates.length = 0;
+  for (let date of temp_dates) {
+    db_data_sort_dates.push(date)
+  }
+  let obs = countObs(db_data_sort_dates[0]);
+  let date = db_data_sort_dates[0].split('T');
+      date[1] = date[1].split(':');
+      date = date[0] + ' ' + date[1][0] + ":" + date[1][1];
+  document.getElementById('timeline-date').value = date;
+  document.getElementById('timeline-text').innerHTML = `Day ${intervalPointer+1} : ${obs} Obs`;
+}
+
+const countObs = (date) =>{
+  let count_obs = 0;
+  for (let feature of db_data_sort[0].features){
+    if (new Date(date) >= new Date(feature.properties.date)) {
+      count_obs ++ ;
+    }else {
+      break;
+    }
+  }
+  return count_obs;
+}
+
+const timeVisualization = () => {
+  let obs,last_obs;
+    timeInterval = setInterval(() => {
+                    if (intervalPointer === db_data_sort_dates.length) {intervalPointer=0; console.log('first');}
+                    console.log(db_data_sort_dates[intervalPointer],intervalPointer);
+                    if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
+                    obs = countObs(db_data_sort_dates[intervalPointer]);
+                    let date = db_data_sort_dates[intervalPointer].split('T');
+                        date[1] = date[1].split(':');
+                        date = date[0] + ' ' + date[1][0] + ":" + date[1][1];
+                    document.getElementById('timeline-date').value = date;
+                    document.getElementById('timeline-text').innerHTML = `Day ${intervalPointer+1} : ${obs} Obs`;
+                    intervalPointer ++;
+
+                  }, 500);
+    // select_data(date);
+  // let vis = removeMapLayers();
+  // if (vis === 'cluster') {
+  //   displayDataonMap_Cluster(db_data_sort[0])
+  // }else if (vis === 'heatmap') {
+  //   displayDataonMap_Heatmap(db_data_sort[0])
+  // }
+}
+
+const select_data = (date) => {
+  let selected_data = [];
+  for (let feature of db_data_sort[0].features) {
+    if (feature.properties.date < date ) {
+      console.log(feature);
+    }
+  }
+}
+
+const removeMapLayers = () => {
+  let visibility = map.getLayoutProperty('cluster-0', 'visibility');
+  let vis;
+  if (visibility === 'visible' || visibility === undefined ) {
+    map.removeLayer('cluster-0');
+    map.removeLayer('cluster-1');
+    map.removeLayer('cluster-2');
+    map.removeLayer('cluster-count');
+    map.removeLayer('unclustered-points');
+  	map.removeSource('observations-cluster');
+    map.removeImage('jellyfish');
+    vis = 'cluster';
+  }else{
+    map.removeLayer('jellyfish-heat');
+    map.removeSource('observations-heatmap');
+    vis = 'heatmap';
+  }
+  return vis;
 }

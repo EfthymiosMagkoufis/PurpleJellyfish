@@ -87,9 +87,9 @@ nav {
 }
 
 .brand-img{
-  width: 60px;
+  width: 50px;
   margin-left: 15px;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 .fas.fa-plus{
@@ -112,10 +112,10 @@ button.play-pause{
   margin-left: -7px;
 }
 button#play{
-  display: none;
   margin-left: 20px;
 }
 button#pause{
+  display: none;
   margin-left: 20px;
 }
 button.play-pause:hover{
@@ -134,6 +134,7 @@ input.timeline-date{
   text-align: center;
   font-weight: bold;
   background: none;
+  color: #a75fdc;
 }
 input.timeline-date:focus-visible{
   outline: none;
@@ -456,6 +457,37 @@ input.mapboxgl-ctrl-geocoder--input{
     max-width: 500px!important;
 }
 
+.extra-map-btns{
+  position: absolute;
+  right: 10px;
+  width: 29px;
+  height: 29px;
+  display: block;
+  padding: 0;
+  outline: none;
+  border: 0;
+  box-sizing: border-box;
+  background-color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+  font-size: 15px;
+  color: #333;
+  visibility: hidden;
+}
+.extra-map-btns:not(:disabled):hover {
+    background-color: rgb(247 244 244);
+}
+#info-btn{
+  top: 245px;
+}
+
+#download-btn{
+  top: 285px;
+}
+
+/*media*/
 @media only screen and (max-width: 600px) {
   .vis-controler {
     top:87%;
