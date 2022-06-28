@@ -44,7 +44,7 @@ document.getElementById('vis-switch').addEventListener('click', () => {
 });
 
 document.getElementById('pause').addEventListener('click', () => {
-  clearInterval(timeInterval);
+ clearInterval(timeInterval);
  document.getElementById('pause').style.display = 'none';
  document.getElementById('play').style.display = 'block';
  // pauseTime();
@@ -53,9 +53,23 @@ document.getElementById('play').addEventListener('click', () => {
   timeVisualization();
   document.getElementById('play').style.display = 'none';
   document.getElementById('pause').style.display = 'block';
+  document.getElementById('pause').style.disabled = false;
   // startTime();
 });
 
-document.getElementById('timeline-date').addEventListener('onchange', () => {
-
+document.getElementById('stop').addEventListener('click', () => {
+  clearInterval(timeInterval);
+  document.getElementById('pause').style.display = 'none';
+  document.getElementById('play').style.display = 'block';
+  let vis = recognizeVis();
+  if (vis === 'cluster') {
+    map.getSource('observations-cluster').setData(db_data);
+  }else if (vis === 'heatmap') {
+    map.getSource('observations-heatmap').setData(db_data);
+  }
+  document.getElementById('pause').style.disabled = true;
+});
+document.getElementById('timelapse-date').addEventListener('onchange', () => {
+  let date_input = document.getElementById('timelapse-date').value;
+  console.log(date_input);
 });

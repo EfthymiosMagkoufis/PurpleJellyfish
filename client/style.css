@@ -97,7 +97,7 @@ nav {
   padding-right: 5px;
 }
 
-/*timeline controler*/
+/*timelapse controler*/
 button.play-pause{
   border-radius: 50%;
   width: 30px;
@@ -118,12 +118,15 @@ button#pause{
   display: none;
   margin-left: 20px;
 }
+button#stop{
+  margin-left: 5px;
+}
 button.play-pause:hover{
   background-color: #a75fdb;
   color:  #f4f4f2;
 }
 
-input.timeline-date{
+input.timelapse-date{
   width: 120px;
   display: block;
   margin-top: 5px;
@@ -136,16 +139,16 @@ input.timeline-date{
   background: none;
   color: #a75fdc;
 }
-input.timeline-date:focus-visible{
+input.timelapse-date:focus-visible{
   outline: none;
   border: solid #a75fdb 2px;
   color: #a75fdb;
 }
 
-span.timeline-text{
+span.timelapse-text{
   display: block;
   margin-top: -3px;
-  margin-left: 65px;
+  margin-left: 75px;
   font-size: 15px;
 }
 
@@ -155,13 +158,13 @@ span.timeline-text{
 
 
 
-.vis-controler, .timeline-controler{
+.vis-controler, .timelapse-controler{
   position: absolute;
   top: 60px;
   left: 130px;
   margin-left: -107.5px;
   height: 40px;
-  width: 215px;
+  width: 245px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,7 +177,7 @@ span.timeline-text{
   box-shadow: 3px 3px 13px 0px rgba(157, 15, 162, 0.14);
 }
 
-.timeline-controler{
+.timelapse-controler{
   top: 110px!important;
   height: 60px!important;
   justify-content: start;
@@ -355,7 +358,7 @@ textarea#your-comment{
 
 #date-label{
   margin-left: 20px;
-  padding-right: 10px;
+  padding-right: 0px;
   font-family: monospace;
   color: #a75fdb;
   font-size: 13px;

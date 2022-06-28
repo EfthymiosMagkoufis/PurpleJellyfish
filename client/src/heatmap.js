@@ -1,5 +1,5 @@
 const displayDataonMap_Heatmap = (data) => {
-
+  console.log('heatmap run');
     // Add a new source from our GeoJSON data and set the
     // 'cluster' option to true.
     map.addSource("observations-heatmap", {

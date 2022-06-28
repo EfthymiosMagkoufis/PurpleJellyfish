@@ -72,6 +72,7 @@ if (date1 > date2) {
 
 let activeComForm = false;
 const markerList = [];
+let db_data;
 const db_data_sort = [];
 const db_data_sort_dates = [];
 let timeInterval = null;
@@ -186,7 +187,7 @@ const uploadObservation = () => {
 }
 
 
-// timeline Visualization
+// timelapse Visualization
 
 const pre_timeVisualization = (data) => {
   data.features = data.features.sort((a, b) => new Date(a.properties.date) - new Date(b.properties.date) );
@@ -210,8 +211,8 @@ const pre_timeVisualization = (data) => {
   let date = db_data_sort_dates[0].split('T');
       date[1] = date[1].split(':');
       date = date[0] + ' ' + date[1][0] + ":" + date[1][1];
-  document.getElementById('timeline-date').value = date;
-  document.getElementById('timeline-text').innerHTML = `Day ${intervalPointer+1} : ${obs} Obs`;
+  document.getElementById('timelapse-date').value = date;
+  document.getElementById('timelapse-text').innerHTML = `Day ${intervalPointer+1} : ${obs} Obs`;
 }
 
 const countObs = (date) =>{
@@ -227,8 +228,17 @@ const countObs = (date) =>{
 }
 
 const timeVisualization = () => {
-  let obs,last_obs;
+  let obs, last_obs, timelapse_data;
     timeInterval = setInterval(() => {
+                    timelapse_data = select_data(db_data_sort_dates[intervalPointer]);
+                    let vis = recognizeVis();
+                    if (vis === 'cluster') {
+                      map.getSource('observations-cluster').setData(timelapse_data);
+                    }else if (vis === 'heatmap') {
+                      map.getSource('observations-heatmap').setData(timelapse_data);
+                    }
+
+
                     if (intervalPointer === db_data_sort_dates.length) {intervalPointer=0; console.log('first');}
                     console.log(db_data_sort_dates[intervalPointer],intervalPointer);
                     if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
@@ -236,44 +246,42 @@ const timeVisualization = () => {
                     let date = db_data_sort_dates[intervalPointer].split('T');
                         date[1] = date[1].split(':');
                         date = date[0] + ' ' + date[1][0] + ":" + date[1][1];
-                    document.getElementById('timeline-date').value = date;
-                    document.getElementById('timeline-text').innerHTML = `Day ${intervalPointer+1} : ${obs} Obs`;
-                    intervalPointer ++;
+                    let days = ((new Date(db_data_sort_dates[intervalPointer]).getTime() - new Date(db_data_sort_dates[0]).getTime())/ (1000 * 3600 * 24))+1;
+                    document.getElementById('timelapse-date').value = date;
+                    document.getElementById('timelapse-text').innerHTML = `Day ${days.toFixed(0)} : ${obs} Obs`;
+                    intervalPointer++;
 
-                  }, 500);
-    // select_data(date);
-  // let vis = removeMapLayers();
-  // if (vis === 'cluster') {
-  //   displayDataonMap_Cluster(db_data_sort[0])
-  // }else if (vis === 'heatmap') {
-  //   displayDataonMap_Heatmap(db_data_sort[0])
-  // }
+                  }, 700);
 }
 
 const select_data = (date) => {
-  let selected_data = [];
+  let geojson ={
+       "type": "FeatureCollection",
+       "features": []
+      };
   for (let feature of db_data_sort[0].features) {
-    if (feature.properties.date < date ) {
-      console.log(feature);
+    if (new Date(feature.properties.date) < new Date(date) ) {
+      geojson.features.push(feature);
     }
   }
+  return geojson;
 }
 
-const removeMapLayers = () => {
+const recognizeVis = () => {
   let visibility = map.getLayoutProperty('cluster-0', 'visibility');
   let vis;
   if (visibility === 'visible' || visibility === undefined ) {
-    map.removeLayer('cluster-0');
-    map.removeLayer('cluster-1');
-    map.removeLayer('cluster-2');
-    map.removeLayer('cluster-count');
-    map.removeLayer('unclustered-points');
-  	map.removeSource('observations-cluster');
-    map.removeImage('jellyfish');
+    // map.removeImage('jellyfish');
+    // map.removeLayer('cluster-0');
+    // map.removeLayer('cluster-1');
+    // map.removeLayer('cluster-2');
+    // map.removeLayer('cluster-count');
+    // map.removeLayer('unclustered-points');
+  	// map.removeSource('observations-cluster');
     vis = 'cluster';
   }else{
-    map.removeLayer('jellyfish-heat');
-    map.removeSource('observations-heatmap');
+    // map.removeLayer('jellyfish-heat');
+    // map.removeSource('observations-heatmap');
     vis = 'heatmap';
   }
   return vis;
