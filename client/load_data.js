@@ -1,6 +1,6 @@
 const loadData = async () => {
     try {
-       let fetched = await fetch("src/final_data.json");
+       let fetched = await fetch("src/raw_data.json");
        if(fetched) {
          // console.log(fetched);
           let observations = await fetched.json();
