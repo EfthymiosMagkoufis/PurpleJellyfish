@@ -57,6 +57,7 @@ module.exports = {
 //----Geojson format
 
 const createGeoJson = (data) => {
+  console.log(data);
   let geojson = {
   "type": "FeatureCollection",
   "features": []
