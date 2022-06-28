@@ -74,7 +74,7 @@ const displayDataonMap_Heatmap = (data) => {
     //     // Populate the popup and set its coordinates
     //     // based on the feature found.
     //
-    //     let date = feature.properties.date.split('T');
+    //     let date = feature.properties.obsDate.split('T');
     //     date = date[0];
     //     let popup = new mapboxgl.Popup()
     //         .setLngLat(feature.geometry.coordinates)

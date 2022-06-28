@@ -48,7 +48,7 @@ displayDataonMap = (data) => {
     },
      comment.properties.name,
      comment.properties.comment,
-     comment.properties.date,
+     comment.properties.obsDate,
      fly=false
    );
    bounds.extend([comment.geometry.coordinates[0],comment.geometry.coordinates[1]]);
@@ -190,10 +190,10 @@ const uploadObservation = () => {
 // timelapse Visualization
 
 const pre_timeVisualization = (data) => {
-  data.features = data.features.sort((a, b) => new Date(a.properties.date) - new Date(b.properties.date) );
+  data.features = data.features.sort((a, b) => new Date(a.properties.obsDate) - new Date(b.properties.obsDate) );
 
   for (let feature of data.features) {
-    db_data_sort_dates.push(feature.properties.date);
+    db_data_sort_dates.push(feature.properties.obsDate);
   }
   db_data_sort.push(data);
   let temp_dates = [];
@@ -218,7 +218,7 @@ const pre_timeVisualization = (data) => {
 const countObs = (date) =>{
   let count_obs = 0;
   for (let feature of db_data_sort[0].features){
-    if (new Date(date) >= new Date(feature.properties.date)) {
+    if (new Date(date) >= new Date(feature.properties.obsDate)) {
       count_obs ++ ;
     }else {
       break;
@@ -260,7 +260,7 @@ const select_data = (date) => {
        "features": []
       };
   for (let feature of db_data_sort[0].features) {
-    if (new Date(feature.properties.date) < new Date(date) ) {
+    if (new Date(feature.properties.obsDate) < new Date(date) ) {
       geojson.features.push(feature);
     }
   }
