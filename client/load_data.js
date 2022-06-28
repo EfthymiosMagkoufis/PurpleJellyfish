@@ -1,13 +1,13 @@
 const loadData = async () => {
     try {
-       let fetched = await fetch("src/raw_data.json");
+       let fetched = await fetch("src/final_data.json");
        if(fetched) {
          // console.log(fetched);
           let observations = await fetched.json();
           console.log(observations);
           for (let obs of observations.data) {
             date = new Date().toISOString();
-            obs.date = date
+            obs.date = date;
             console.log(obs);
             postdata(obs);
           };
