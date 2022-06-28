@@ -73,8 +73,7 @@ const createGeoJson = (data) => {
         "name": com.name,
         "comment": com.comment,
         "obsDate": com.obsDate,
-        "date": com.date,
-        "mec": "ooo"
+        "date": com.obsDate
         }
     };
     // console.log(geojson.features);
