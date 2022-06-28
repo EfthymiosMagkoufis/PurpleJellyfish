@@ -8,6 +8,7 @@ const loadData = async () => {
           for (let obs of observations.data) {
             date = new Date().toISOString();
             obs.date = date;
+            obs.obsDate = new Date(obs.obsDate).toISOString();
             console.log(obs);
             postdata(obs);
           };
