@@ -240,7 +240,7 @@ const timeVisualization = () => {
 
 
                     if (intervalPointer === db_data_sort_dates.length) {intervalPointer=0; console.log('first');}
-                    console.log(db_data_sort_dates[intervalPointer],intervalPointer);
+                    // console.log(db_data_sort_dates[intervalPointer],intervalPointer);
                     if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
                     obs = countObs(db_data_sort_dates[intervalPointer]);
                     let date = db_data_sort_dates[intervalPointer].split('T');
@@ -251,7 +251,7 @@ const timeVisualization = () => {
                     document.getElementById('timelapse-text').innerHTML = `Day ${days.toFixed(0)} : ${obs} Obs`;
                     intervalPointer++;
 
-                  }, 700);
+                  }, 650);
 }
 
 const select_data = (date) => {

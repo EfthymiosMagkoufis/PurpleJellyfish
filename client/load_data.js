@@ -43,8 +43,8 @@ const creategeojson = (data) => {
 
 
 const postdata = async (obs) => {
-  fetch("https://purplejellyfish.herokuapp.com/Obs/", {
-  // fetch("http://localhost:3000/Obs/", {
+  // fetch("https://purplejellyfish.herokuapp.com/Obs/", {
+  fetch("http://localhost:5000/Obs/", {
       method: "POST",
       body: JSON.stringify(obs),
       headers: {

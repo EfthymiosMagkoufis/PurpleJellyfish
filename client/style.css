@@ -160,7 +160,7 @@ span.timelapse-text{
 
 .vis-controler, .timelapse-controler{
   position: absolute;
-  top: 60px;
+  top: 70px;
   left: 130px;
   margin-left: -107.5px;
   height: 40px;
@@ -178,7 +178,7 @@ span.timelapse-text{
 }
 
 .timelapse-controler{
-  top: 110px!important;
+  top: 120px;
   height: 60px!important;
   justify-content: start;
   flex-wrap: wrap;
@@ -491,14 +491,33 @@ input.mapboxgl-ctrl-geocoder--input{
 }
 
 /*media*/
+@media only screen and (max-width: 840px) {
+  .select-tab{
+    top: 200px!important;
+  }
+}
+@media only screen and (max-width: 640px) {
+  #info-btn{
+    top: 255px;
+  }
+  #download-btn{
+    top: 293px;
+  }
+}
 @media only screen and (max-width: 600px) {
-  .vis-controler {
+  .vis-controler{
     top:87%;
+  }
+  .timelapse-controler{
+    top:75%;
   }
 }
 @media only screen and (max-height: 300px) {
   .vis-controler {
     top:80%;
+  }
+  .timelapse-controler{
+    top:65%;
   }
 }
 /********************************************************************

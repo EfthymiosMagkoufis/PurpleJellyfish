@@ -68,7 +68,9 @@ document.getElementById('stop').addEventListener('click', () => {
     map.getSource('observations-heatmap').setData(db_data);
   }
   document.getElementById('pause').style.disabled = true;
+  intervalPointer = 0;
 });
+
 document.getElementById('timelapse-date').addEventListener('onchange', () => {
   let date_input = document.getElementById('timelapse-date').value;
   console.log(date_input);
