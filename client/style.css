@@ -9,12 +9,67 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
 /* #61278d
 #9a50ac */
 
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+::-webkit-scrollbar:horizontal{
+  height: 5px;
+  cursor: pointer;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.2); */
+  border-radius: 5px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #9a50ac;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #9a50ac;
+  cursor: pointer;
+}
 
 body {
   margin: 0; padding: 0;
   height: 100%;
 }
+h1#loading-txt{
+  margin-top: -260px;
+  margin-left: 10px;
+}
 
+#loading-background{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(213 195 214 / 83%);
+  z-index: 10;
+  font-family: arial;
+  color: #9a50ac;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: 10px;
+  overflow: hidden;
+}
+#loading{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  margin-left: -110px!important;
+  margin-top: -110px!important;
+}
 nav {
   background-color: #f4f4f2;
   width: 100%;
@@ -151,12 +206,6 @@ span.timelapse-text{
   margin-left: 75px;
   font-size: 15px;
 }
-
-
-
-
-
-
 
 .vis-controler, .timelapse-controler{
   position: absolute;
@@ -490,11 +539,44 @@ input.mapboxgl-ctrl-geocoder--input{
   top: 285px;
 }
 
+
+.info-tab{
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  margin-left: calc(-20%);
+  width: 40%;
+  height: 470px;
+  background: #f4f4f2;
+  border-radius: 13px;
+  align-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  color: #a75fdc;
+  justify-content: center;
+  padding: 20px;
+  font-size: 17px;
+  font-family: arial;
+  box-shadow: 3px 3px 13px 0px rgb(157 15 162 / 14%);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 2000;
+  /* visibility: hidden; */
+  transition: all 0.4s linear;
+  
+}
+h1#info-header{
+  margin-top: 10px;
+  padding-bottom: 20px;
+  font-family: 'Dosis', sans-serif;
+}
+
 /*media*/
 @media only screen and (max-width: 840px) {
   .select-tab{
     top: 200px!important;
   }
+
 }
 @media only screen and (max-width: 640px) {
   #info-btn{
@@ -503,13 +585,24 @@ input.mapboxgl-ctrl-geocoder--input{
   #download-btn{
     top: 293px;
   }
+  h1#info-header{
+    font-size: 28px;
+  }
+  .info-tab{
+    margin-left: calc(-30%);
+    width: 60%;
+  }
 }
 @media only screen and (max-width: 600px) {
   .vis-controler{
     top:87%;
   }
   .timelapse-controler{
-    top:75%;
+    top:76%;
+  }
+  .info-tab{
+    margin-left: calc(-35%);
+    width: 70%;
   }
 }
 @media only screen and (max-height: 300px) {
@@ -518,6 +611,9 @@ input.mapboxgl-ctrl-geocoder--input{
   }
   .timelapse-controler{
     top:65%;
+  }
+  h1#info-header{
+    font-size: 23px;
   }
 }
 /********************************************************************

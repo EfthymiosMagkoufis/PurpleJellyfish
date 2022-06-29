@@ -76,7 +76,7 @@ const createGeoJson = (data) => {
         }
     };
     // console.log(geojson.features);
-    console.log(feature);
+    // console.log(feature);
     geojson.features.push(feature);
   }
   return geojson;

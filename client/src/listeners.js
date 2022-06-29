@@ -75,3 +75,7 @@ document.getElementById('timelapse-date').addEventListener('onchange', () => {
   let date_input = document.getElementById('timelapse-date').value;
   console.log(date_input);
 });
+
+document.getElementById('download-btn').addEventListener('click', () => {
+  download_data();
+});

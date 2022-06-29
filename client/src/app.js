@@ -4,7 +4,8 @@ const map = new mapboxgl.Map({
   container: 'map', // container ID
   style: 'mapbox://styles/mapbox/light-v10', // style URL
   center: [23.7961216, 38.01088], // starting position [lng, lat]
-  zoom: 5 // starting zoom
+  zoom: 5,
+  // projection: 'globe'
 });
 
 
@@ -35,7 +36,8 @@ map.on('load', () =>{
   document.getElementById('info-btn').style.visibility = "visible";
   document.getElementById('download-btn').style.visibility = "visible";
 
-  let data = getData();
+  // getNumofData();
+  getData();
 });
 
 displayDataonMap = (data) => {
@@ -285,4 +287,12 @@ const recognizeVis = () => {
     vis = 'heatmap';
   }
   return vis;
+}
+
+
+const download_data = () => {
+  let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db_data));
+  let dlAnchorElem = document.getElementById('download-btn-a');
+  dlAnchorElem.setAttribute("href",     dataStr     );
+  dlAnchorElem.setAttribute("download", "purplejellyfish_data.geojson");
 }

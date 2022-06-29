@@ -9,9 +9,9 @@
     <link rel="icon" type="image/x-icon" href="./img/jellyfish_icon.ico">
   </head>
   <link  href='style.css'  rel='stylesheet'/>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
   <script src="https://kit.fontawesome.com/81a905b0b2.js" crossorigin="anonymous"></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
   <body>
@@ -21,6 +21,20 @@
         <button type="button" name="button" class="nav-btns" id="add-com"><i class="fas fa-plus"></i>Observation</button>
       </nav>
       <div class="container">
+        <div id="loading-animation">
+          <div id="loading-background">
+            <h1 id="loading-txt">PurpleJellyfish loading ...</h1>
+          </div>
+          <svg id="loading" style="margin:auto;background:transparent;display:block;" width="220px" height="220px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+            <circle cx="50" cy="50" r="0" fill="none" stroke="#7930b1" stroke-width="2">
+            <animate attributeName="r" repeatCount="indefinite" dur="1.36986301369863s" values="0;30" keyTimes="0;1" keySplines="0 0.2 0.8 1" calcMode="spline" begin="0s"></animate>
+            <animate attributeName="opacity" repeatCount="indefinite" dur="1.36986301369863s" values="1;0" keyTimes="0;1" keySplines="0.2 0 0.8 1" calcMode="spline" begin="0s"></animate>
+            </circle><circle cx="50" cy="50" r="0" fill="none" stroke="#a75fdb" stroke-width="2">
+            <animate attributeName="r" repeatCount="indefinite" dur="1.36986301369863s" values="0;30" keyTimes="0;1" keySplines="0 0.2 0.8 1" calcMode="spline" begin="-0.684931506849315s"></animate>
+            <animate attributeName="opacity" repeatCount="indefinite" dur="1.36986301369863s" values="1;0" keyTimes="0;1" keySplines="0.2 0 0.8 1" calcMode="spline" begin="-0.684931506849315s"></animate>
+            </circle>
+          </svg>
+        </div>
         <div class="map" id="map"></div>
         <div class="vis-controler">
           <a class="vis-btns" id="heatmap-btn">Heatmap</a>
@@ -58,7 +72,16 @@
           </form>
         </div>
         <button type="button" name="button" class="extra-map-btns" id="info-btn" title="About"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
-        <button type="button" name="button" class="extra-map-btns" id="download-btn" title="Download data"><i class="fa fa-download" aria-hidden="true"></i></button>
+        <button type="button" name="button" class="extra-map-btns" id="download-btn" title="Download data"><a id="download-btn-a" style="color:#333333" > <i class="fa fa-download" aria-hidden="true"></i></a></button>
+      </div>
+      <div class="info-tab">
+        <h1 id="info-header">Welcome to <br>PurpleJellyfish</h1>
+        PurpleJellyfish is an web-based geo-application that depicts the appearance of the purple jellyfish in the Greek seas. The data used was obtained from <a style="color:#a75fdb" class="about-links" href="https://www.inaturalist.org/" target="_blank"> Naturalist.org</a> as well as PurpleJellyfish users.
+        The user has the ability to watch the spread of purple jellyfish in the Greek seas using the tool timelapse geovisualizations, as well as the ability to add personal observations about the appearance of purple jellyfish.
+        For the implementation of this website were used: node.js, express.js, postgreSQL and mapbox GL JS.
+        <br><br>Developed by Magkoufis Efthymios, Rural and Surveying Engineer - Geoinformatics Engineer of NTUA.
+        <br>contact: <a  style="color:#a75fdb" href="mailto:themismagf@yahoo.gr">themismagf@yahoo.gr</a>
+        <br><br>Copyright 2022 <i style="color:#a75fdb"  class="fa fa-copyright" aria-hidden="true"></i> Magkoufis Efthymios.  All rights reserved.
       </div>
   </body>
   <!-- <script src="./load_data.js"></script> -->
