@@ -79,3 +79,20 @@ document.getElementById('timelapse-date').addEventListener('onchange', () => {
 document.getElementById('download-btn').addEventListener('click', () => {
   download_data();
 });
+
+document.getElementById('info-btn').addEventListener('click', () => {
+  document.querySelector('.info-background').style.visibility = 'visible';
+  let style = document.querySelector('.info-tab').style;
+  style.top = '100px';
+  style.opacity = "1";
+  style.visibility = 'visible';
+});
+
+document.getElementById('close-info-btn').addEventListener('click', () => {
+  let style = document.querySelector('.info-tab').style;
+  style.top = '-300px';
+  style.opacity = '0';
+  style.visibility = 'hidden';
+  document.querySelector('.info-background').style.visibility = 'hidden';
+
+});

@@ -1,10 +1,11 @@
+// https://api.inaturalist.org/v1/observations?verifiable=true&order_by=observations.id&order=desc&page=1&spam=false&taxon_id=256089&swlng=21.61219911285894&swlat=37.34444501635445&nelng=26.30336122223394&nelat=39.707656882032005&locale=en-US&per_page=24
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlbWlzLW1hZyIsImEiOiJja2c2c2oyYWcwMDcwMnFvY2hwbTVnM291In0.0dPkSnZY6GNE09bNbqB-ZQ';
 
 const map = new mapboxgl.Map({
   container: 'map', // container ID
   style: 'mapbox://styles/mapbox/light-v10', // style URL
   center: [23.7961216, 38.01088], // starting position [lng, lat]
-  zoom: 5,
+  zoom: 5.7,
   // projection: 'globe'
 });
 
