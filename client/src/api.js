@@ -14,8 +14,8 @@ const getNumofData = async () => {
 
 const getData = async () => {
     try {
-       // let fetched = await fetch("https://purplejellyfish.herokuapp.com/allObs");
-       let fetched = await fetch("http://localhost:5000/allObs");
+       let fetched = await fetch("https://purplejellyfish.herokuapp.com/allObs");
+       // let fetched = await fetch("http://localhost:5000/allObs");
        // let fetched = await fetch(`https://api.inaturalist.org/v1/observations?verifiable=any&order_by=observations.id&order=desc&page=1&spam=false&d1=2022-01-01&project_id=jellyfish-of-greece&locale=en-US&per_page=${num}&return_bounds=true`);
        if(fetched) {
            let data = await fetched.json()
@@ -38,8 +38,8 @@ const getData = async () => {
 
 
 const postData = async (obs) => {
-  // fetch("https://purplejellyfish.herokuapp.com/", {
-  fetch("http://localhost:5000/Obs", {
+  fetch("https://purplejellyfish.herokuapp.com/", {
+  // fetch("http://localhost:5000/Obs", {
       method: "POST",
       body: JSON.stringify(obs),
       headers: {
