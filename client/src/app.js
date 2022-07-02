@@ -163,13 +163,13 @@ const uploadObservation = () => {
   let date = document.getElementById('your-date');
   // console.log(name.value); console.log(comment.value); console.log(date.value);
   if (name.value == '') {
-    alert('pleace insert a Nickname first')
+    alert('Insert a Nickname first')
     return;
   }else if (comment.value == '') {
-    alert('pleace insert a Comment first')
+    alert('Insert a Comment first')
     return;
   }else if (date.value === undefined) {
-    alert('Pleace insert an Observation Date first')
+    alert('Insert an Observation Date first')
     return;
   }
   activeComForm = false;
