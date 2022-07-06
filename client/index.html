@@ -14,6 +14,7 @@
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
   <script src="https://kit.fontawesome.com/81a905b0b2.js" crossorigin="anonymous"></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <body>
       <nav>
         <img src="./img/jellyfish.jpg" class="brand-img">
@@ -36,20 +37,33 @@
           </svg>
         </div>
         <div class="map" id="map"></div>
-        <div class="vis-controler">
-          <a class="vis-btns" id="heatmap-btn">Heatmap</a>
-          <label class="switch">
-            <input type="checkbox" checked id="vis-switch">
-            <span class="slider round"></span>
-          </label>
-          <a class="vis-btns" id="cluster-btn">Clusters</a>
-        </div>
-        <div class="timelapse-controler">
-            <button type="button" class="play-pause" id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
-            <button type="button" class="play-pause" id="pause"><i class="fa fa-pause" aria-hidden="true"></i></button>
-            <button type="button" class="play-pause" id="stop"><i class="fa fa-stop" aria-hidden="true"></i></button>
-            <input type="text" class="timelapse-date" id="timelapse-date" disabled>
-            <br><span class="timelapse-text" id="timelapse-text"></span>
+        <div class="controlers">
+          <div class="vis-controler">
+            <a class="vis-btns" id="heatmap-btn">Heatmap</a>
+            <label class="switch">
+              <input type="checkbox" checked id="vis-switch">
+              <span class="slider round"></span>
+            </label>
+            <a class="vis-btns" id="cluster-btn">Clusters</a>
+          </div>
+          <div class="timelapse-controler">
+            <div class="timelapse">
+              <button type="button" class="play-pause" id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
+              <button type="button" class="play-pause" id="pause"><i class="fa fa-pause" aria-hidden="true"></i></button>
+              <button type="button" class="play-pause" id="stop"><i class="fa fa-stop" aria-hidden="true"></i></button>
+              <input type="text" class="timelapse-date" id="timelapse-date" disabled>
+              <i class="fa fa-chevron-down" aria-hidden="true" title="open time period tab"></i>
+              <i class="fa fa-chevron-up" aria-hidden="true"  title="close time period tab"></i>
+              <br><span class="timelapse-text" id="timelapse-text"></span>
+            </div>
+          </div>
+          <div class="timelapse-info">
+            <label id="from-label" for="from">from</label>
+            <input type='date' placeholder='yyyy-mm-dd' id='from' name='beginPosition' min='' max='' >
+            <label id="to-label" for="to">to</label>
+            <input type='date' placeholder='yyyy-mm-dd' id='to' name='endPosition' min='' max='' >
+            <br><span class="timelapse-text" id="timelapse-info-text"></span>
+          </div>
         </div>
         <div class="select-tab">
           <i class="fa fa-times" aria-hidden="true" id="comment-stab-close"></i>
@@ -73,6 +87,9 @@
         </div>
         <button type="button" name="button" class="extra-map-btns" id="info-btn" title="About"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
         <button type="button" name="button" class="extra-map-btns" id="download-btn" title="Download data"><a id="download-btn-a" style="color:#333333" > <i class="fa fa-download" aria-hidden="true"></i></a></button>
+        <!-- <div class="chart-area">
+        <canvas  id="line-chart"></canvas>
+        </div> -->
       </div>
       <div class="info-background"></div>
       <div class="info-tab">

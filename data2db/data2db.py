@@ -2,23 +2,28 @@ import psycopg2
 import requests
 import jsons
 import datetime
+from datetime import timedelta
 
 
 
 def fetchData(bbox):
-    print('Fetching data for bbox = ',bbox)
+    print('Fetching data for bbox =',bbox)
     today = datetime.datetime.now().date().isoformat()
-    # url ='https://api.inaturalist.org/v1/observations?verifiable=true&order_by=observations.id&order=desc&page=1&spam=false&d1=%s&nelat=%s&nelng=%s&swlat=%s&swlng=%s&taxon_id=256089&locale=en-US&per_page=200'%(today,bbox[0],bbox[1],bbox[2],bbox[3])
-    url ='https://api.inaturalist.org/v1/observations?verifiable=true&order_by=observations.id&order=desc&page=1&spam=false&nelat=%s&nelng=%s&swlat=%s&swlng=%s&taxon_id=256089&locale=en-US&per_page=200'%(bbox[0],bbox[1],bbox[2],bbox[3])
+    last_date = open('upload_dates.txt', 'r')
+    last_date = last_date.readlines();
+    last_date = (datetime.datetime.strptime(last_date[len(last_date)-1].strip(), '%Y-%m-%dT%H:%M:%S.%f' ) + timedelta(minutes=1)).isoformat().split('.')
+    last_date = last_date[0]
+    print('Fetching data from:', last_date)
+    url ='https://api.inaturalist.org/v1/observations?verifiable=true&order_by=observations.id&order=desc&page=1&spam=false&d1=%s&nelat=%s&nelng=%s&swlat=%s&swlng=%s&taxon_id=256089&locale=en-US&per_page=200'%(last_date,bbox[0],bbox[1],bbox[2],bbox[3])
+    # url ='https://api.inaturalist.org/v1/observations?verifiable=true&order_by=observations.id&order=desc&page=1&spam=false&nelat=%s&nelng=%s&swlat=%s&swlng=%s&taxon_id=256089&locale=en-US&per_page=200'%(bbox[0],bbox[1],bbox[2],bbox[3])
     print('Sending request...')
-    res = requests.get(url, timeout=45)
+    res = requests.get(url, timeout=120)
     response = jsons.loads(res.text)
     print('Reading response...')
     print('Fetched results:',len(response['results']))
     if response['total_results'] == 0:
-        print('no observation for today')
+        print('no observation for this period')
         return 0
-
     results = []
     for obs in response["results"]:
         date = datetime.datetime.now().isoformat()
@@ -31,8 +36,13 @@ def fetchData(bbox):
             "date" : date
         }
         results.append(obj)
-        # print(obj)
     return results
+
+def update_upload_dates():
+    with open("upload_dates.txt", "a") as dates:
+        dates.write(datetime.datetime.now().isoformat())
+        dates.close();
+
 
 
 def postData(data):
@@ -49,15 +59,13 @@ def postData(data):
     for obs in data:
         sql_insert = 'INSERT INTO inaturalist (name, comment, longitude, latitude, obsDate, date) VALUES (%s, %s, %s, %s, %s, %s)'
         cursor.execute(sql_insert, (str(obs['name']), str(obs['comment']), str(obs['longitude']), str(obs['latitude']), str(obs['obsDate']), str(obs['date'])))
-
-
-
     # Commit your changes in the database
     conn.commit()
     print("Records inserted...")
 
     # Closing the connection
     conn.close()
+    update_upload_dates();
 
 with open("bboxes.geojson", "r+") as bboxes:
     # Reading form a file
@@ -83,6 +91,7 @@ for bbox in bboxes['features']:
     if fetched_data != 0:
         total_data += fetched_data
         print('Observations added to list')
+
     # break
 print(len(total_data), 'observations added today')
 postData(total_data)

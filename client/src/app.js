@@ -64,13 +64,6 @@ displayDataonMap = (data) => {
 };
 
 
-let date1 = new Date('2022-04-03');
-let date2 = new Date('2022-05-25');
-if (date1 > date2) {
-  console.log(true);
-}else if (date2 > date1) {
-  // console.log(false);
-}
 //-------------
 
 let activeComForm = false;
@@ -78,9 +71,9 @@ const markerList = [];
 let db_data;
 const db_data_sort = [];
 const db_data_sort_dates = [];
+const all_dates = [];
 let timeInterval = null;
 let intervalPointer = 0;
-// find location and display a marker to map
 
 const form_visibility = (a) =>{
   let visibility = document.getElementsByClassName('comment-form')[0].style.visibility;
@@ -199,32 +192,50 @@ const pre_timeVisualization = (data) => {
     db_data_sort_dates.push(feature.properties.obsDate);
   }
   db_data_sort.push(data);
-  let temp_dates = [];
-  temp_dates.push(db_data_sort_dates[0]);
+  all_dates.push(db_data_sort_dates[0]);
   for (let i in db_data_sort_dates) {
-    if (temp_dates[temp_dates.length-1] !== db_data_sort_dates[i]) {
-      temp_dates.push(db_data_sort_dates[i]);
+    if (all_dates[all_dates.length-1] !== db_data_sort_dates[i]) {
+      all_dates.push(db_data_sort_dates[i]);
     }
   }
   db_data_sort_dates.length = 0;
-  for (let date of temp_dates) {
-    db_data_sort_dates.push(date)
+  for (let date of all_dates) {
+    db_data_sort_dates.push(date);
   }
   let obs = countObs(db_data_sort_dates[0]);
-  let date = db_data_sort_dates[0].split('T');
-      date[1] = date[1].split(':');
-      date = date[0] + ' ' + date[1][0] + ":" + date[1][1];
-  document.getElementById('timelapse-date').value = date;
+  let f_date = db_data_sort_dates[0].split('T');
+      f_date[1] = f_date[1].split(':');
+      f_date = f_date[0] + ' ' + f_date[1][0] + ":" + f_date[1][1];
+  let l_date = db_data_sort_dates[db_data_sort_dates.length - 1].split('T');
+      l_date[1] = l_date[1].split(':');
+      l_date = l_date[0] + ' ' + l_date[1][0] + ":" + l_date[1][1];
+  document.getElementById('timelapse-date').value = f_date;
   document.getElementById('timelapse-text').innerHTML = `Day ${intervalPointer+1} : ${obs} Obs`;
+  document.getElementById('timelapse-info-text').innerHTML = `${db_data.features.length} Obs in this period`;
+
+  f_date = f_date.split(" "); f_date = f_date[0];
+  l_date = l_date.split(" "); l_date = l_date[0];
+
+  document.getElementById('from').value = f_date;
+  document.getElementById('from').min = f_date;
+  document.getElementById('from').max = l_date;
+
+  document.getElementById('to').value = l_date;
+  document.getElementById('to').min = f_date;
+  document.getElementById('to').max = l_date;
+
+  // buildChart();
 }
 
 const countObs = (date) =>{
   let count_obs = 0;
+  let f_date = new Date(document.getElementById('from').value);
+  let l_date = new Date(document.getElementById('to').value);
   for (let feature of db_data_sort[0].features){
-    if (new Date(date) >= new Date(feature.properties.obsDate)) {
+    let obs_date = new Date(feature.properties.obsDate)
+    if (obs_date >= f_date && obs_date <= l_date && obs_date <= new Date(date) ) {
       count_obs ++ ;
     }else {
-      break;
     }
   }
   return count_obs;
@@ -232,7 +243,7 @@ const countObs = (date) =>{
 
 const timeVisualization = () => {
   let obs, last_obs, timelapse_data;
-    timeInterval = setInterval(() => {
+  timeInterval = setInterval(() => {
                     timelapse_data = select_data(db_data_sort_dates[intervalPointer]);
                     let vis = recognizeVis();
                     if (vis === 'cluster') {
@@ -241,8 +252,7 @@ const timeVisualization = () => {
                       map.getSource('observations-heatmap').setData(timelapse_data);
                     }
 
-
-                    if (intervalPointer === db_data_sort_dates.length) {intervalPointer=0; console.log('first');}
+                    if (intervalPointer === db_data_sort_dates.length) intervalPointer=0;
                     // console.log(db_data_sort_dates[intervalPointer],intervalPointer);
                     if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
                     obs = countObs(db_data_sort_dates[intervalPointer]);
@@ -262,12 +272,43 @@ const select_data = (date) => {
        "type": "FeatureCollection",
        "features": []
       };
+  let f_date = new Date(document.getElementById('from').value);
+  let l_date = new Date(document.getElementById('to').value);
   for (let feature of db_data_sort[0].features) {
-    if (new Date(feature.properties.obsDate) < new Date(date) ) {
+    if (new Date(feature.properties.obsDate) >= f_date && new Date(feature.properties.obsDate) <= l_date  && new Date(feature.properties.obsDate) <= new Date(date)) {
       geojson.features.push(feature);
     }
   }
   return geojson;
+}
+
+const stopVis = () => {
+  clearInterval(timeInterval);
+  document.getElementById('pause').style.display = 'none';
+  document.getElementById('play').style.display = 'block';
+  let vis = recognizeVis();
+  if (vis === 'cluster') {
+    map.getSource('observations-cluster').setData(db_data);
+  }else if (vis === 'heatmap') {
+    map.getSource('observations-heatmap').setData(db_data);
+  }
+  document.getElementById('pause').style.disabled = true;
+  intervalPointer = 0;
+}
+
+const fitDatesOnTimePeriod = () => {
+  let f_date = new Date(document.getElementById('from').value);
+  let l_date = new Date(document.getElementById('to').value);
+  let new_dates_array = [];
+  for (let date of all_dates) {
+    if (new Date(date) >= f_date && new Date(date) <= l_date) {
+      new_dates_array.push(date);
+    }
+  }
+  db_data_sort_dates.length = 0;
+  for (let date of new_dates_array) {
+    db_data_sort_dates.push(date);
+  }
 }
 
 const recognizeVis = () => {
@@ -296,4 +337,50 @@ const download_data = () => {
   let dlAnchorElem = document.getElementById('download-btn-a');
   dlAnchorElem.setAttribute("href",     dataStr     );
   dlAnchorElem.setAttribute("download", "purplejellyfish_data.geojson");
+}
+
+
+const buildChart = () => {
+
+    var data = {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+      datasets: [
+        {
+          label: "Dataset #1",
+          backgroundColor: "rgba(255,99,132,0.2)",
+          borderColor: "rgba(255,99,132,1)",
+          borderWidth: 2,
+          hoverBackgroundColor: "rgba(255,99,132,0.4)",
+          hoverBorderColor: "rgba(255,99,132,1)",
+          data: [65, 59, 20, 81, 56, 55, 40]
+        }
+      ]
+      };
+
+      var option = {
+      responsive: false,
+      scales: {
+        y: {
+          stacked: true,
+          grid: {
+            display: true,
+            color: "rgba(255,99,132,0.2)"
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      },
+      maintainAspectRatio: false,
+      };
+
+      const ctx = document.getElementById('line-chart');
+      const myChart = new Chart(ctx, {
+          type: "line",
+          options: option,
+          data: data
+      });
+
 }

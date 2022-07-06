@@ -1,22 +1,7 @@
-const getNumofData = async () => {
-  try {
-    let fetched = await fetch("https://api.inaturalist.org/v1/observations?verifiable=any&order_by=observations.id&order=desc&page=1&spam=false&d1=2022-01-01&project_id=jellyfish-of-greece&locale=en-US&per_page=1&return_bounds=true");
-    if(fetched) {
-      let data = await fetched.json()
-      console.log(data.total_results);
-      getData(data.total_results);
-    }
-  } catch (e) {
-    alert('iNaturalist API does not response :(');
-    throw new Error(e.message);
-  }
-}
-
 const getData = async () => {
     try {
        let fetched = await fetch("https://purplejellyfish.herokuapp.com/allObs");
        // let fetched = await fetch("http://localhost:5000/allObs");
-       // let fetched = await fetch(`https://api.inaturalist.org/v1/observations?verifiable=any&order_by=observations.id&order=desc&page=1&spam=false&d1=2022-01-01&project_id=jellyfish-of-greece&locale=en-US&per_page=${num}&return_bounds=true`);
        if(fetched) {
            let data = await fetched.json()
            // data = collectData(data.results);

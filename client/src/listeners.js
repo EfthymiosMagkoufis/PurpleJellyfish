@@ -58,17 +58,7 @@ document.getElementById('play').addEventListener('click', () => {
 });
 
 document.getElementById('stop').addEventListener('click', () => {
-  clearInterval(timeInterval);
-  document.getElementById('pause').style.display = 'none';
-  document.getElementById('play').style.display = 'block';
-  let vis = recognizeVis();
-  if (vis === 'cluster') {
-    map.getSource('observations-cluster').setData(db_data);
-  }else if (vis === 'heatmap') {
-    map.getSource('observations-heatmap').setData(db_data);
-  }
-  document.getElementById('pause').style.disabled = true;
-  intervalPointer = 0;
+  stopVis();
 });
 
 document.getElementById('timelapse-date').addEventListener('onchange', () => {
@@ -94,5 +84,27 @@ document.getElementById('close-info-btn').addEventListener('click', () => {
   style.opacity = '0';
   style.visibility = 'hidden';
   document.querySelector('.info-background').style.visibility = 'hidden';
+});
 
+document.querySelector('.fa.fa-chevron-down').addEventListener('click', () => {
+  document.querySelector('.timelapse-info').style.visibility = 'visible';
+  document.querySelector('.fa.fa-chevron-down').style.visibility = 'hidden';
+  document.querySelector('.fa.fa-chevron-up').style.visibility = 'visible';
+});
+
+document.querySelector('.fa.fa-chevron-up').addEventListener('click', () => {
+  document.querySelector('.timelapse-info').style.visibility = 'hidden';
+  document.querySelector('.fa.fa-chevron-up').style.visibility = 'hidden';
+  document.querySelector('.fa.fa-chevron-down').style.visibility = 'visible';
+});
+
+document.getElementById('from').addEventListener('input', () => {
+  stopVis();
+  fitDatesOnTimePeriod();
+  document.getElementById('timelapse-info-text').innerHTML = `${countObs(db_data_sort_dates[db_data_sort_dates.length - 1])} Obs in this period`;
+});
+document.getElementById('to').addEventListener('input', () => {
+  stopVis();
+  fitDatesOnTimePeriod();
+  document.getElementById('timelapse-info-text').innerHTML = `${countObs(db_data_sort_dates[db_data_sort_dates.length - 1])} Obs in this period`;
 });
