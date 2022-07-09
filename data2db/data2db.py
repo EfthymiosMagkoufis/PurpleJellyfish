@@ -76,6 +76,7 @@ with open("bboxes.geojson", "r+") as bboxes:
 # bbox_list = [[37.96099577857019, 24.101871964567575,37.70749064648202, 23.224173763021625]]
 #
 total_data = []
+count = 0
 for bbox in bboxes['features']:
     bbox_ = bbox['geometry']['coordinates']
     for bbox__ in bbox_:
@@ -88,9 +89,12 @@ for bbox in bboxes['features']:
                 bl = bbox___
         # print('ur = ',ur,'\n','bl = ',bl,'\n')
     fetched_data = fetchData( [ur[1],ur[0],bl[1],bl[0]] )
+    count += 1
+    print('%s/%s areas have fetched'%(count,len(bboxes['features'])))
     if fetched_data != 0:
         total_data += fetched_data
         print('Observations added to list')
+
 
     # break
 print(len(total_data), 'observations added today')

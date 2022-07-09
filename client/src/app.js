@@ -70,6 +70,7 @@ let activeComForm = false;
 const markerList = [];
 let db_data;
 const db_data_sort = [];
+const fixed_db_data = [];
 const db_data_sort_dates = [];
 const all_dates = [];
 let timeInterval = null;
@@ -186,6 +187,7 @@ const uploadObservation = () => {
 // timelapse Visualization
 
 const pre_timeVisualization = (data) => {
+  console.log('pre_timeVisualization');
   data.features = data.features.sort((a, b) => new Date(a.properties.obsDate) - new Date(b.properties.obsDate) );
 
   for (let feature of data.features) {
@@ -224,16 +226,18 @@ const pre_timeVisualization = (data) => {
   document.getElementById('to').min = f_date;
   document.getElementById('to').max = l_date;
 
-  // buildChart();
+  buildChart(db_data_sort_dates,db_data_sort[0].features);
 }
 
 const countObs = (date) =>{
   let count_obs = 0;
   let f_date = new Date(document.getElementById('from').value);
   let l_date = new Date(document.getElementById('to').value);
+  if (fixed_db_data.length > 0 ) fixed_db_data[0].features.length = 0;
   for (let feature of db_data_sort[0].features){
     let obs_date = new Date(feature.properties.obsDate)
     if (obs_date >= f_date && obs_date <= l_date && obs_date <= new Date(date) ) {
+      if (fixed_db_data.length > 0 ) fixed_db_data[0].features.push(feature);
       count_obs ++ ;
     }else {
     }
@@ -251,7 +255,7 @@ const timeVisualization = () => {
                     }else if (vis === 'heatmap') {
                       map.getSource('observations-heatmap').setData(timelapse_data);
                     }
-
+                    buildChart(db_data_sort_dates,intervalPointer,timelapse_data.features);
                     if (intervalPointer === db_data_sort_dates.length) intervalPointer=0;
                     // console.log(db_data_sort_dates[intervalPointer],intervalPointer);
                     if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
@@ -277,8 +281,10 @@ const select_data = (date) => {
   for (let feature of db_data_sort[0].features) {
     if (new Date(feature.properties.obsDate) >= f_date && new Date(feature.properties.obsDate) <= l_date  && new Date(feature.properties.obsDate) <= new Date(date)) {
       geojson.features.push(feature);
+
     }
   }
+  fixed_db_data.push(geojson);
   return geojson;
 }
 
@@ -286,11 +292,13 @@ const stopVis = () => {
   clearInterval(timeInterval);
   document.getElementById('pause').style.display = 'none';
   document.getElementById('play').style.display = 'block';
+  countObs(db_data_sort_dates[db_data_sort_dates.length - 1])
   let vis = recognizeVis();
-  if (vis === 'cluster') {
-    map.getSource('observations-cluster').setData(db_data);
+  let data = fixed_db_data.length > 0 ? fixed_db_data[0] : db_data;
+  if (vis === 'cluster'){
+    map.getSource('observations-cluster').setData(data);
   }else if (vis === 'heatmap') {
-    map.getSource('observations-heatmap').setData(db_data);
+    map.getSource('observations-heatmap').setData(data);
   }
   document.getElementById('pause').style.disabled = true;
   intervalPointer = 0;
@@ -340,47 +348,88 @@ const download_data = () => {
 }
 
 
-const buildChart = () => {
+const buildChart = (labels,inp,chart_data) => {
+  let chart_data_array = new Array(inp+1).fill(0);
+  let i = 0;
+  labels.map(function(date){
+    date = date.split("T");
+    date = date[0];
+    console.log(date);
+    return date;
+  });
+  console.log(labels);
+  while (i <= inp) {
+    for (let f of chart_data) {
+      if (f.properties.obsDate === labels[i]) {
+        chart_data_array[i] ++;
+      }
+    }
+    i++;
+  }
 
-    var data = {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-      datasets: [
-        {
-          label: "Dataset #1",
-          backgroundColor: "rgba(255,99,132,0.2)",
-          borderColor: "rgba(255,99,132,1)",
-          borderWidth: 2,
-          hoverBackgroundColor: "rgba(255,99,132,0.4)",
-          hoverBorderColor: "rgba(255,99,132,1)",
-          data: [65, 59, 20, 81, 56, 55, 40]
-        }
-      ]
-      };
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "",
+        backgroundColor: "rgba(255,99,132,0.2)",
+        borderColor: "rgba(255,99,132,1)",
+        borderWidth: 2,
+        hoverBackgroundColor: "rgba(255,99,132,0.4)",
+        hoverBorderColor: "rgba(255,99,132,1)",
+        data: chart_data_array
+      },
+      {
+        label: "",
+        backgroundColor: "rgba(255,99,132,0.2)",
+        borderColor: "rgba(255,99,132,1)",
+        borderWidth: 2,
+        hoverBackgroundColor: "rgba(255,99,132,0.4)",
+        hoverBorderColor: "rgba(255,99,132,1)",
+        data: chart_data_array
+      }
+    ]
+  };
 
-      var option = {
-      responsive: false,
-      scales: {
-        y: {
-          stacked: true,
-          grid: {
-            display: true,
-            color: "rgba(255,99,132,0.2)"
-          }
-        },
-        x: {
-          grid: {
+  const option = {
+    //- next 2 lines for response chart
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+         legend: {
             display: false
-          }
+         }
+    },
+    scales: {
+      xAxes: {
+        display: false,
+        scaleLabel: {
+            display: true,
+            labelString: 'Month'
         }
       },
-      maintainAspectRatio: false,
-      };
+      yAxes: {
+        display: true,
+        ticks: {
+            beginAtZero: false,
+            autoSkip: false,
+            min: 0,
+            max: 100,
+        }
+      }
+    },
+    animation: {
+       duration: 0
+   }
 
-      const ctx = document.getElementById('line-chart');
-      const myChart = new Chart(ctx, {
-          type: "line",
-          options: option,
-          data: data
-      });
+  };
+  document.querySelector('.chart-area').innerHTML = '<canvas  id="line-chart"></canvas>';
+  const ctx = document.getElementById('line-chart');
+  const myChart = new Chart(ctx, {
+      type: "line",
+      options: option,
+      data: data
+  });
+  myChart.update();
 
 }

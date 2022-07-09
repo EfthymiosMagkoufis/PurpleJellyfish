@@ -99,12 +99,12 @@ document.querySelector('.fa.fa-chevron-up').addEventListener('click', () => {
 });
 
 document.getElementById('from').addEventListener('input', () => {
-  stopVis();
   fitDatesOnTimePeriod();
   document.getElementById('timelapse-info-text').innerHTML = `${countObs(db_data_sort_dates[db_data_sort_dates.length - 1])} Obs in this period`;
+  stopVis();
 });
 document.getElementById('to').addEventListener('input', () => {
-  stopVis();
   fitDatesOnTimePeriod();
   document.getElementById('timelapse-info-text').innerHTML = `${countObs(db_data_sort_dates[db_data_sort_dates.length - 1])} Obs in this period`;
+  stopVis();
 });
