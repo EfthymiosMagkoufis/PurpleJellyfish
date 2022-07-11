@@ -75,18 +75,20 @@ const db_data_sort_dates = [];
 const all_dates = [];
 let timeInterval = null;
 let intervalPointer = 0;
+let dChart;
 
 const form_visibility = (a) =>{
   let visibility = document.getElementsByClassName('comment-form')[0].style.visibility;
   let style = document.getElementsByClassName('comment-form')[0].style;
   if (visibility === 'hidden' || visibility === '' ) {
-    style.left = '20px';
+    // style.left = '20px';
+    style.top = '120px'
     style.opacity = '1';
     style.visibility = 'visible';
   }else if (a!=='btn'){
     style.visibility = 'hidden';
     style.opacity = '0';
-    style.left = '-250px';
+    style.top = '-120px';
   }
 }
 const stab_visibility = (a) =>{
@@ -226,7 +228,7 @@ const pre_timeVisualization = (data) => {
   document.getElementById('to').min = f_date;
   document.getElementById('to').max = l_date;
 
-  buildChart(db_data_sort_dates,db_data_sort[0].features);
+  buildChart(db_data_sort_dates,0,db_data_sort[0].features);
 }
 
 const countObs = (date) =>{
@@ -255,8 +257,8 @@ const timeVisualization = () => {
                     }else if (vis === 'heatmap') {
                       map.getSource('observations-heatmap').setData(timelapse_data);
                     }
-                    buildChart(db_data_sort_dates,intervalPointer,timelapse_data.features);
                     if (intervalPointer === db_data_sort_dates.length) intervalPointer=0;
+                    updateChartData(intervalPointer,timelapse_data.features);
                     // console.log(db_data_sort_dates[intervalPointer],intervalPointer);
                     if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
                     obs = countObs(db_data_sort_dates[intervalPointer]);
@@ -317,6 +319,7 @@ const fitDatesOnTimePeriod = () => {
   for (let date of new_dates_array) {
     db_data_sort_dates.push(date);
   }
+  buildChart(db_data_sort_dates,0,db_data_sort[0].features);
 }
 
 const recognizeVis = () => {
@@ -349,44 +352,60 @@ const download_data = () => {
 
 
 const buildChart = (labels,inp,chart_data) => {
-  let chart_data_array = new Array(inp+1).fill(0);
+
+  let chart_data_array = new Array(db_data_sort_dates.length).fill(0);
+
   let i = 0;
-  labels.map(function(date){
-    date = date.split("T");
-    date = date[0];
-    console.log(date);
-    return date;
-  });
-  console.log(labels);
-  while (i <= inp) {
-    for (let f of chart_data) {
-      if (f.properties.obsDate === labels[i]) {
-        chart_data_array[i] ++;
+  let sum = 0;
+  for (let date of db_data_sort_dates) {
+    for (let f of db_data_sort[0].features) {
+      if (f.properties.obsDate === date) {
+        chart_data_array[i] += 1;
+        sum +=1;
       }
     }
     i++;
   }
-
+  i = 0;
+  // console.log(labels);
+  // while (i <= inp) {
+  //   for (let f of chart_data) {
+  //     if (f.properties.obsDate === labels[i]) {
+  //       tlapse_chart_data_array[i] ++;
+  //     }
+  //   }
+  //   i++;
+  // }
+  let lebel;
+  if (inp === 1) {
+    document.getElementById('timelapse-text').innerHTML = `Day 1 : ${chart_data_array[0]} Obs`;
+    let date = db_data_sort_dates[0].split('T'); date = date[0];
+    label = " " + date + " : " + chart_data_array[0] + ' observations';
+  }else{
+    let date = db_data_sort_dates[inp].split('T'); date = date[0];
+    label = " " + date + " : " + chart_data_array[inp] + ' observations';
+  }
   const data = {
     labels: labels,
     datasets: [
       {
-        label: "",
-        backgroundColor: "rgba(255,99,132,0.2)",
-        borderColor: "rgba(255,99,132,1)",
+        label: [],
+        data: [],
+        backgroundColor: "rgba(167, 95, 220, 0.4)",
+        borderColor: "#a75fdc",
         borderWidth: 2,
-        hoverBackgroundColor: "rgba(255,99,132,0.4)",
-        hoverBorderColor: "rgba(255,99,132,1)",
-        data: chart_data_array
+        tension: .2,
+        pointRadius: 0,
+        fill: 'origin'
       },
       {
-        label: "",
-        backgroundColor: "rgba(255,99,132,0.2)",
-        borderColor: "rgba(255,99,132,1)",
+        label: "fixed data",
+        data: chart_data_array,
+        borderColor: "rgba(187, 185, 187, 0.83)",
         borderWidth: 2,
-        hoverBackgroundColor: "rgba(255,99,132,0.4)",
-        hoverBorderColor: "rgba(255,99,132,1)",
-        data: chart_data_array
+        tension: .2,
+        pointRadius: 0,
+        fill: 'origin'
       }
     ]
   };
@@ -396,40 +415,106 @@ const buildChart = (labels,inp,chart_data) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-         legend: {
-            display: false
-         }
+       legend: {
+          display: true,
+          labels: {
+            filter: (l) => (l.text !== 'fixed data'),
+            usePointStyle: true,
+            color:"#a75fdc",
+            font:{
+              family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+              size: 13,
+              weight: 'bold'
+
+            }
+          },
+          position: 'bottom'
+       },
+       tooltip:{
+            usePointStyle:true,
+            title: false,
+            intersect: false,
+            position: 'nearest',
+            rtl: true,
+            backgroundColor: "rgba(167, 95, 220, 0.66)",
+            fontSize: 14,
+            callbacks: {
+              label: (context)=> {
+                      let label = context.label.split("T");
+                      return label[0]  + " : " + context.dataset.data[context.dataIndex] + " obs    ";
+                    },
+              title : () => null,
+           },
+           filter: (context) => {
+             if (context.dataset.label === 'fixed data'){
+               return true;
+             }else {
+               return false;
+             }
+           },
+           font: {
+             family: 'Helvetica Neue',
+             color:"#a75fdc",
+             size: 14
+           }
+        }
     },
     scales: {
       xAxes: {
         display: false,
-        scaleLabel: {
-            display: true,
-            labelString: 'Month'
+        grid: {
+          display: false
         }
       },
       yAxes: {
         display: true,
         ticks: {
             beginAtZero: false,
-            autoSkip: false,
-            min: 0,
-            max: 100,
+            color: '#a75fdc'
+        },
+        grid: {
+          display: false
         }
       }
     },
     animation: {
        duration: 0
    }
-
   };
   document.querySelector('.chart-area').innerHTML = '<canvas  id="line-chart"></canvas>';
   const ctx = document.getElementById('line-chart');
-  const myChart = new Chart(ctx, {
+  dChart = new Chart(ctx, {
       type: "line",
-      options: option,
-      data: data
+      data: data,
+      options: option
   });
-  myChart.update();
 
+  updateChartData(inp, chart_data);
+}
+
+const updateChartData = (inp, chart_data) => {
+
+  let tlapse_chart_data_array = new Array(inp+1).fill(0);
+  let i = 0;
+  while (i <= inp) {
+    for (let f of chart_data) {
+      if (f.properties.obsDate === db_data_sort_dates[i]) {
+        tlapse_chart_data_array[i] ++;
+      }
+    }
+    i++;
+  }
+  let lebel;
+  if (tlapse_chart_data_array.length === 0) {
+    document.getElementById('timelapse-text').innerHTML = `Day 1 : ${tlapse_chart_data_array[0]} Obs`;
+    tlapse_chart_data_array = [0];
+    let date = db_data_sort_dates[0].split('T'); date = date[0];
+    label = " " + date + " : " + tlapse_chart_data_array[0] + ' observations'
+  }else{
+    let date = db_data_sort_dates[inp].split('T'); date = date[0];
+    label = " " + date + " : " + tlapse_chart_data_array[tlapse_chart_data_array.length-1] + ' observations';
+  }
+  dChart.data.datasets[0].data = tlapse_chart_data_array;
+  dChart.data.datasets[0].label = label;
+  dChart.update();
 }

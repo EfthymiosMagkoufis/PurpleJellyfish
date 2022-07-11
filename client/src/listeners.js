@@ -108,3 +108,23 @@ document.getElementById('to').addEventListener('input', () => {
   document.getElementById('timelapse-info-text').innerHTML = `${countObs(db_data_sort_dates[db_data_sort_dates.length - 1])} Obs in this period`;
   stopVis();
 });
+
+document.getElementById('show-controlers-btn').addEventListener("click", ()=>{
+    document.querySelector('.controlers').style.visibility = 'visible';
+    document.getElementById('show-controlers-btn').style.visibility = 'hidden';
+    document.getElementById('close-controlers-btn').style.visibility = 'visible';
+    document.querySelector('.fa.fa-chevron-down').style.visibility = 'visible';
+
+});
+
+document.getElementById('close-controlers-btn').addEventListener("click", ()=>{
+  document.querySelector('.controlers').style.visibility = 'hidden';
+  document.getElementById('show-controlers-btn').style.visibility = 'visible';
+  document.getElementById('close-controlers-btn').style.visibility = 'hidden';
+  document.querySelector('.fa.fa-chevron-down').style.visibility = 'hidden';
+  let style_tmDate = document.querySelector('.timelapse-info').style;
+  if (style_tmDate.visibility === 'visible') {
+    style_tmDate.visibility = 'hidden';
+    document.querySelector('.fa.fa-chevron-up').style.visibility = 'hidden';
+  }
+});

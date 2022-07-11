@@ -52,7 +52,7 @@ h1#loading-txt{
   height: 100%;
   background-color: rgb(213 195 214 / 83%);
   z-index: 10;
-  font-family: arial;
+  font-family: system-ui;
   color: #9a50ac;
   display: flex;
   align-content: center;
@@ -107,7 +107,7 @@ nav {
   border-width: 1px;
   font-size: 15px;
   color: #a75fdb;
-  font-family: arial;
+  font-family: system-ui;
   padding: 5px 10px;
   position: absolute;
   right: 10px;
@@ -120,7 +120,7 @@ nav {
 
 }
 
-.nav-btns:hover, .select-btn:hover{
+.nav-btns:hover, .select-btn:hover, #show-controlers-btn:hover, #close-controlers-btn:hover{
   background-color:#a75fdb;
   color: #f4f4f2;
   cursor: pointer;
@@ -263,6 +263,7 @@ span.timelapse-text, spam.timelapse-info-text{
   flex-wrap: wrap;
   align-content: center;
   justify-content: space-evenly;
+  z-index: 9;
 }
 
 .vis-controler, .timelapse-controler, .timelapse-info{
@@ -278,7 +279,7 @@ span.timelapse-text, spam.timelapse-info-text{
   justify-content: center;
   background: #f4f4f2;
   font-size: 15px;
-  font-family: arial;
+  font-family: system-ui;
   font-weight: bold;
   color: #a75fdb;
   border-radius: 13px;
@@ -321,7 +322,7 @@ span.timelapse-text, spam.timelapse-info-text{
   bottom: 0;
   background-color:#7930b1;
   -webkit-transition: .4s;
-  transition: .4s;
+  transition: 0s;
 }
 
 .slider:before {
@@ -333,7 +334,7 @@ span.timelapse-text, spam.timelapse-info-text{
   bottom: 1px;
   background-color: #f4f4f2;
   -webkit-transition: .4s;
-  transition: .4s;
+  transition: 0s;
 }
 
 input:checked + .slider {
@@ -389,7 +390,7 @@ input:checked + .slider:before {
   border-width: 1px;
   font-size: 15px;
   color: #a75fdb;
-  font-family: arial;
+  font-family: system-ui;
   padding: 5px 10px;
   position: absolute;
   border: none;
@@ -407,13 +408,14 @@ input:checked + .slider:before {
 .comment-form{
   position: absolute;
   display: block;
-  top: 150px;
-  left: -250px;
+  top: 0px;
+  left: 50%;
+  margin-left: -150px;
   height: 370px;
   width: 300px;
   background-color: #f4f4f2;
   border-radius: 13px;
-  z-index: 1;
+  z-index: 10;
   text-align: left;
   box-shadow: 3px 3px 13px 0px rgba(157, 15, 162, 0.14);
   opacity: 0;
@@ -440,7 +442,7 @@ i.fa.fa-times{
   padding-left:20px;
   color: #a75fdb;
   font-weight: bold;
-  font-family: arial;
+  font-family: system-ui;
 }
 textarea#your-name{
   margin-left: 20px;
@@ -499,7 +501,7 @@ textarea#your-name:focus, textarea#your-comment:focus {
   border-bottom: 2px solid #a75fdb;
   background-color: transparent;
   color:  #a75fdb;
-  /* font-family: arial; */
+  /* font-family: system-ui; */
   font-weight: 500;
 }
 
@@ -631,7 +633,7 @@ input.mapboxgl-ctrl-geocoder--input{
   justify-content: center;
   padding: 20px;
   font-size: 17px;
-  font-family: arial;
+  font-family: system-ui;
   box-shadow: 3px 3px 13px 0px rgb(157 15 162 / 14%);
   z-index: 2000;
   transition: all 0.3s linear;
@@ -681,14 +683,13 @@ h1#info-header{
   bottom: 30px;
   margin-left: calc(2.5%);
   width: 95%;
-  height: 150px;
-  background: #fff;
+  height: 200px;
   border-radius: 13px;
-  /* opacity: 0.2; */
-  box-shadow: 3px 3px 13px 0px rgb(157 15 162 / 14%);
+  box-shadow: 4px 7px 20px 0px rgb(157 15 162 / 14%);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 8;
 }
 #line-chart{
   opacity: 1;
@@ -696,6 +697,41 @@ h1#info-header{
   height: 95%!important;
   width: 95%!important;
 }
+.controlers-btn{
+  visibility: hidden;
+  position: absolute;
+  top: 60px;
+  left: 8px;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+  justify-content: center;
+  align-items: center;
+  align-content: space-around;
+  border: none;
+  background-color: #f4f4f2;
+  color: #a75fdc;
+  box-shadow: 0px 0px 9px 3px rgb(157 15 162 / 14%);
+  font-size: 18px;
+}
+#close-controlers-btn {
+  position: absolute;
+  visibility: hidden;
+  margin: 0;
+  font-size: 25px;
+  color: #710493;
+}
+#close-controlers.fa.fa-times{
+  margin: 0;
+  font-size: 25px;
+  color: #710493;
+}
+#show-controlers-btn{
+  visibility: hidden;
+  position: absolute;
+}
+
 
 /*media*/
 @media only screen and (max-width: 840px) {
@@ -707,8 +743,20 @@ h1#info-header{
 @media only screen and (max-width: 640px) {
   .controlers{
     position: absolute;
-    bottom: 40px;
-
+    bottom: 100px;
+    visibility: hidden;
+  }
+  .controlers-btn{
+    visibility: visible;
+  }
+  #show-controlers-btn{
+    visibility: visible;
+  }
+  .chart-area{
+    height: 150px;
+  }
+  .fa.fa-chevron-down{
+    visibility: hidden;
   }
   #info-btn{
     top: 255px;
@@ -722,6 +770,9 @@ h1#info-header{
   .info-tab{
     margin-left: calc(-30%);
     width: 60%;
+  }
+  .mapboxgl-ctrl-geocoder.mapboxgl-ctrl{
+    width: 150px!important;
   }
 }
 @media only screen and (max-width: 600px) {
