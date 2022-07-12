@@ -15,9 +15,17 @@ const pool = new pg({
   }
 });
 
+const getUsersObservations = (req,res) =>{
+  pool.query('SELECT * FROM observations', (error,results) =>{
+    if (error) {
+      throw error;
+    }
+    let data = createGeoJson(results.rows)
+    res.status(200).json(data);
+  })
+}
 const getObservations = (req,res) =>{
   pool.query('SELECT * FROM iNaturalist, observations', (error,results) =>{
-  // pool.query('SELECT * FROM observations', (error,results) =>{
     if (error) {
       throw error;
     }
@@ -49,6 +57,7 @@ const deleteObservation = (req, res) => {
 }
 
 module.exports = {
+  getUsersObservations,
   getObservations,
   createObservation,
   deleteObservation

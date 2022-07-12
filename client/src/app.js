@@ -156,7 +156,7 @@ const changeVisualization = () => {
 const uploadObservation = () => {
   let name = document.getElementById('your-name');
   let comment = document.getElementById('your-comment');
-  let date = document.getElementById('your-date');
+  let obsDate = document.getElementById('your-date');
   // console.log(name.value); console.log(comment.value); console.log(date.value);
   if (name.value == '') {
     alert('Insert a Nickname first')
@@ -164,19 +164,21 @@ const uploadObservation = () => {
   }else if (comment.value == '') {
     alert('Insert a Comment first')
     return;
-  }else if (date.value === undefined) {
+  }else if (obsDate.value === undefined) {
     alert('Insert an Observation Date first')
     return;
   }
+  console.log(name.value,comment.value,obsDate.value);
   activeComForm = false;
   form_visibility();
   let location = removeMarker(markerList[markerList.length-1]);
-  // let date = new Date().toISOString();
+  let date = new Date().toISOString();
   // postData({
   //   "name": name.value,
   //   "comment": comment.value,
   //   "longitude": location.lng,
   //   "latitude": location.lat,
+  //   "obsDate": ,
   //   "date": date
   // });
   createMarker({'lng': location.lng ,'lat': location.lat},name.value,comment.value,date.value,true);

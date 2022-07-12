@@ -3,16 +3,21 @@ const getData = async () => {
        let fetched = await fetch("https://purplejellyfish.herokuapp.com/allObs");
        // let fetched = await fetch("http://localhost:5000/allObs");
        if(fetched) {
-           let data = await fetched.json()
-           // data = collectData(data.results);
+           let data = await fetched.json();
            console.log(data.features);
-           // displayDataonMap(data);
-           db_data = data;
-           displayDataonMap_Cluster(data);
-           displayDataonMap_Heatmap(data);
-           pre_timeVisualization(data);
-           document.getElementById('loading-animation').style.display = 'none';
-
+           let usersfetched = await fetch("https://purplejellyfish.herokuapp.com/allUsersObs");
+           if (usersfetched) {
+             let usersdata = await fetched.json();
+             console.log(usersdata.features);
+             for (f of usersdata.features) {
+               data.features.push(f);
+             }
+             db_data = data;
+             displayDataonMap_Cluster(data);
+             displayDataonMap_Heatmap(data);
+             pre_timeVisualization(data);
+             document.getElementById('loading-animation').style.display = 'none';
+           }
        }
    }
    catch (error) {
