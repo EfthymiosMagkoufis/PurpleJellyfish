@@ -20,7 +20,7 @@ const server = app.listen(port, () => {
   console.log( `App is working on port ${port}`);
 });
 
-app.get('/allUsersObs', db.getObservations);
+app.get('/allUsersObs', db.getUsersObservations);
 app.get('/allObs', db.getObservations);
 app.post('/Obs', db.createObservation);
 app.delete('/obs/:id', db.deleteObservation);
