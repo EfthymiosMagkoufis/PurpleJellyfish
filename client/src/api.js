@@ -7,7 +7,7 @@ const getData = async () => {
            console.log(data.features);
            let usersfetched = await fetch("https://purplejellyfish.herokuapp.com/allUsersObs");
            if (usersfetched) {
-             let usersdata = await fetched.json();
+             let usersdata = await usersfetched.json();
              console.log(usersdata.features);
              for (f of usersdata.features) {
                data.features.push(f);
