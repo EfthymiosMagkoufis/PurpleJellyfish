@@ -1,22 +1,22 @@
 const pg = require('pg').Pool;
 require('dotenv').config();
-const pool = new pg({
-  user: process.env.db_user,
-  host: process.env.db_host,
-  database: process.env.db,
-  password: process.env.db_password, //.env file
-  port:process.env.db_port,
-});
-
 // const pool = new pg({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
+//   user: process.env.db_user,
+//   host: process.env.db_host,
+//   database: process.env.db,
+//   password: process.env.db_password, //.env file
+//   port:process.env.db_port,
 // });
 
+const pool = new pg({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
 const getObservations = (req,res) =>{
-  pool.query('SELECT * FROM iNaturalist', (error,results) =>{
+  pool.query('SELECT * FROM iNaturalist, observations', (error,results) =>{
   // pool.query('SELECT * FROM observations', (error,results) =>{
     if (error) {
       throw error;
