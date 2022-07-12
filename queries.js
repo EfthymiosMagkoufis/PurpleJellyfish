@@ -24,6 +24,7 @@ const getUsersObservations = (req,res) =>{
     res.status(200).json(data);
   })
 }
+
 const getObservations = (req,res) =>{
   pool.query('SELECT * FROM iNaturalist', (error,results) =>{
     if (error) {

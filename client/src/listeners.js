@@ -11,7 +11,9 @@ document.getElementById('geo-loc').addEventListener("click", ()=>{
   document.getElementById('add-com').disabled = true;
 
 });
-
+document.getElementById('notice-close-btn').addEventListener("click", ()=>{
+  notice_tab_visibility('close');
+});
 document.getElementById('loc-on-map').addEventListener("click", ()=>{
   stab_visibility();
   map.getCanvas().style.cursor = 'pointer';

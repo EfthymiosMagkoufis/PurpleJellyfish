@@ -360,7 +360,7 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 /*Select Tap Style*/
-.select-tab{
+.select-tab, .notice-tab{
   position: absolute;
   display: block;
   top: 150px;
@@ -376,7 +376,7 @@ input:checked + .slider:before {
   transition: all 0.4s linear;
 
 }
-.select-btn{
+.select-btn {
   position: absolute;
   display: block;
   left: 50%;
@@ -396,6 +396,27 @@ input:checked + .slider:before {
   border: none;
   box-shadow:
   2px 3px 5px rgba(157, 15, 162, 0.14);
+}
+#notice-text{
+  font-family: system-ui;
+  color: #a75fdc;
+  padding: 15px;
+  padding-top: 20px; 
+  text-align: center;
+  font-size: 15px;
+}
+#notice-btn{
+  text-decoration: none;
+  font-weight: 500;
+  width: 100px;
+  margin-left: -125px;
+}
+#notice-close-btn{
+  position: relative;
+  width: 100px;
+  margin-left: 10px;
+  background: #a75fdc;
+  color: #fff;
 }
 #loc-on-map{
   margin-top: 40px;

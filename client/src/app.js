@@ -1,4 +1,3 @@
-// https://api.inaturalist.org/v1/observations?verifiable=true&order_by=observations.id&order=desc&page=1&spam=false&taxon_id=256089&swlng=21.61219911285894&swlat=37.34444501635445&nelng=26.30336122223394&nelat=39.707656882032005&locale=en-US&per_page=24
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlbWlzLW1hZyIsImEiOiJja2c2c2oyYWcwMDcwMnFvY2hwbTVnM291In0.0dPkSnZY6GNE09bNbqB-ZQ';
 
 const map = new mapboxgl.Map({
@@ -105,6 +104,20 @@ const stab_visibility = (a) =>{
   }
 }
 
+const notice_tab_visibility = (a) =>{
+  let visibility = document.getElementsByClassName('notice-tab')[0].style.visibility;
+  let style = document.getElementsByClassName('notice-tab')[0].style;
+  if (visibility === 'hidden' || visibility === '' ) {
+    style.top = '150px';
+    style.opacity = '1';
+    style.visibility = 'visible';
+  }else if (a === 'close') {
+    style.visibility = 'hidden';
+    style.opacity = '0';
+    style.top = '-150px';
+  }
+}
+
 const createMarker = (location,name,comment,date,fly) => {
   if (fly) {
     map.flyTo({
@@ -156,7 +169,7 @@ const changeVisualization = () => {
 const uploadObservation = () => {
   let name = document.getElementById('your-name');
   let comment = document.getElementById('your-comment');
-  let obsDate = document.getElementById('your-date');
+  let obsDate = new Date(document.getElementById('your-date').value).toISOString();
   // console.log(name.value); console.log(comment.value); console.log(date.value);
   if (name.value == '') {
     alert('Insert a Nickname first')
@@ -164,24 +177,25 @@ const uploadObservation = () => {
   }else if (comment.value == '') {
     alert('Insert a Comment first')
     return;
-  }else if (obsDate.value === undefined) {
+  }else if (obsDate === undefined) {
     alert('Insert an Observation Date first')
     return;
   }
-  console.log(name.value,comment.value,obsDate.value);
+  console.log(name.value,comment.value,obsDate);
   activeComForm = false;
   form_visibility();
   let location = removeMarker(markerList[markerList.length-1]);
   let date = new Date().toISOString();
-  // postData({
-  //   "name": name.value,
-  //   "comment": comment.value,
-  //   "longitude": location.lng,
-  //   "latitude": location.lat,
-  //   "obsDate": ,
-  //   "date": date
-  // });
-  createMarker({'lng': location.lng ,'lat': location.lat},name.value,comment.value,date.value,true);
+  postData({
+    "name": name.value,
+    "comment": comment.value,
+    "longitude": location.lng,
+    "latitude": location.lat,
+    "obsDate": obsDate,
+    "date": date
+  });
+  createMarker({'lng': location.lng ,'lat': location.lat},name.value,comment.value,obsDate,true);
+  notice_tab_visibility();
   comment.value = '';
   name.value = '';
   document.getElementById('add-com').disabled = false;
@@ -191,7 +205,6 @@ const uploadObservation = () => {
 // timelapse Visualization
 
 const pre_timeVisualization = (data) => {
-  console.log('pre_timeVisualization');
   data.features = data.features.sort((a, b) => new Date(a.properties.obsDate) - new Date(b.properties.obsDate) );
 
   for (let feature of data.features) {
