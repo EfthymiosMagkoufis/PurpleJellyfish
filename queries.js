@@ -16,8 +16,8 @@ const pool = new pg({
 // });
 
 const getObservations = (req,res) =>{
-  // pool.query('SELECT * FROM iNaturalist', (error,results) =>{
-  pool.query('SELECT * FROM iNaturalist, observations', (error,results) =>{
+  pool.query('SELECT * FROM iNaturalist', (error,results) =>{
+  // pool.query('SELECT * FROM observations', (error,results) =>{
     if (error) {
       throw error;
     }
