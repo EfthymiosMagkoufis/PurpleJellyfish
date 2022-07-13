@@ -1,7 +1,6 @@
 const getData = async () => {
     try {
        let fetched = await fetch("https://purplejellyfish.herokuapp.com/allObs");
-       // let fetched = await fetch("http://localhost:5000/allObs");
        if(fetched) {
            let data = await fetched.json();
            console.log(data.features);
@@ -28,7 +27,6 @@ const getData = async () => {
 
 // const getData = async () => {
 //     try {
-//        // let fetched = await fetch("https://purplejellyfish.herokuapp.com/allObs");
 //        let fetched = await fetch("http://localhost:5000/allUsersObs");
 //        if(fetched) {
 //            let data = await fetched.json()
@@ -84,8 +82,6 @@ const collectData = (data) => {
         "obsDate": f.observed_on,
         }
     };
-    // console.log(geojson.features);
-    // console.log(feature);
     geojson.features.push(feature);
   }
   return geojson;

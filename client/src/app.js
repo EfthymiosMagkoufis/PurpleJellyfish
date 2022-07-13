@@ -1,13 +1,11 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlbWlzLW1hZyIsImEiOiJja2c2c2oyYWcwMDcwMnFvY2hwbTVnM291In0.0dPkSnZY6GNE09bNbqB-ZQ';
 
 const map = new mapboxgl.Map({
-  container: 'map', // container ID
-  style: 'mapbox://styles/mapbox/light-v10', // style URL
-  center: [23.7961216, 38.01088], // starting position [lng, lat]
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v10',
+  center: [23.7961216, 38.01088],
   zoom: 5.7,
-  // projection: 'globe'
 });
-
 
 map.on('load', () =>{
   map.addControl(
@@ -36,7 +34,6 @@ map.on('load', () =>{
   document.getElementById('info-btn').style.visibility = "visible";
   document.getElementById('download-btn').style.visibility = "visible";
 
-  // getNumofData();
   getData();
 });
 
@@ -63,7 +60,7 @@ displayDataonMap = (data) => {
 };
 
 
-//-------------
+//-------------Variables
 
 let activeComForm = false;
 const markerList = [];
@@ -76,11 +73,12 @@ let timeInterval = null;
 let intervalPointer = 0;
 let dChart;
 
+//-------------
+
 const form_visibility = (a) =>{
   let visibility = document.getElementsByClassName('comment-form')[0].style.visibility;
   let style = document.getElementsByClassName('comment-form')[0].style;
   if (visibility === 'hidden' || visibility === '' ) {
-    // style.left = '20px';
     style.top = '120px'
     style.opacity = '1';
     style.visibility = 'visible';
@@ -138,8 +136,6 @@ const createMarker = (location,name,comment,date,fly) => {
 }
 
 const removeMarker = (marker) => {
-  // console.log(markerList);
-  // console.log(marker);
   marker.remove();
   let location = marker._lngLat;
   markerList.pop();
@@ -170,7 +166,6 @@ const uploadObservation = () => {
   let name = document.getElementById('your-name');
   let comment = document.getElementById('your-comment');
   let obsDate = new Date(document.getElementById('your-date').value).toISOString();
-  // console.log(name.value); console.log(comment.value); console.log(date.value);
   if (name.value == '') {
     alert('Insert a Nickname first')
     return;
@@ -181,7 +176,6 @@ const uploadObservation = () => {
     alert('Insert an Observation Date first')
     return;
   }
-  console.log(name.value,comment.value,obsDate);
   activeComForm = false;
   form_visibility();
   let location = removeMarker(markerList[markerList.length-1]);
@@ -265,27 +259,26 @@ const countObs = (date) =>{
 const timeVisualization = () => {
   let obs, last_obs, timelapse_data;
   timeInterval = setInterval(() => {
-                    timelapse_data = select_data(db_data_sort_dates[intervalPointer]);
-                    let vis = recognizeVis();
-                    if (vis === 'cluster') {
-                      map.getSource('observations-cluster').setData(timelapse_data);
-                    }else if (vis === 'heatmap') {
-                      map.getSource('observations-heatmap').setData(timelapse_data);
-                    }
-                    if (intervalPointer === db_data_sort_dates.length) intervalPointer=0;
-                    updateChartData(intervalPointer,timelapse_data.features);
-                    // console.log(db_data_sort_dates[intervalPointer],intervalPointer);
-                    if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
-                    obs = countObs(db_data_sort_dates[intervalPointer]);
-                    let date = db_data_sort_dates[intervalPointer].split('T');
-                        date[1] = date[1].split(':');
-                        date = date[0] + ' ' + date[1][0] + ":" + date[1][1];
-                    let days = ((new Date(db_data_sort_dates[intervalPointer]).getTime() - new Date(db_data_sort_dates[0]).getTime())/ (1000 * 3600 * 24))+1;
-                    document.getElementById('timelapse-date').value = date;
-                    document.getElementById('timelapse-text').innerHTML = `Day ${days.toFixed(0)} : ${obs} Obs`;
-                    intervalPointer++;
+    timelapse_data = select_data(db_data_sort_dates[intervalPointer]);
+    let vis = recognizeVis();
+    if (vis === 'cluster') {
+      map.getSource('observations-cluster').setData(timelapse_data);
+    }else if (vis === 'heatmap') {
+      map.getSource('observations-heatmap').setData(timelapse_data);
+    }
+    if (intervalPointer === db_data_sort_dates.length) intervalPointer=0;
+    updateChartData(intervalPointer,timelapse_data.features);
+    if (intervalPointer === 0) last_obs = 0; else last_obs = obs;
+    obs = countObs(db_data_sort_dates[intervalPointer]);
+    let date = db_data_sort_dates[intervalPointer].split('T');
+        date[1] = date[1].split(':');
+        date = date[0] + ' ' + date[1][0] + ":" + date[1][1];
+    let days = ((new Date(db_data_sort_dates[intervalPointer]).getTime() - new Date(db_data_sort_dates[0]).getTime())/ (1000 * 3600 * 24))+1;
+    document.getElementById('timelapse-date').value = date;
+    document.getElementById('timelapse-text').innerHTML = `Day ${days.toFixed(0)} : ${obs} Obs`;
+    intervalPointer++;
 
-                  }, 650);
+  }, 650);
 }
 
 const select_data = (date) => {
@@ -341,17 +334,8 @@ const recognizeVis = () => {
   let visibility = map.getLayoutProperty('cluster-0', 'visibility');
   let vis;
   if (visibility === 'visible' || visibility === undefined ) {
-    // map.removeImage('jellyfish');
-    // map.removeLayer('cluster-0');
-    // map.removeLayer('cluster-1');
-    // map.removeLayer('cluster-2');
-    // map.removeLayer('cluster-count');
-    // map.removeLayer('unclustered-points');
-  	// map.removeSource('observations-cluster');
     vis = 'cluster';
   }else{
-    // map.removeLayer('jellyfish-heat');
-    // map.removeSource('observations-heatmap');
     vis = 'heatmap';
   }
   return vis;
@@ -366,170 +350,162 @@ const download_data = () => {
 }
 
 
-const buildChart = (labels,inp,chart_data) => {
+const buildChart = (labels, inp, chart_data) => {
 
-  let chart_data_array = new Array(db_data_sort_dates.length).fill(0);
+    let chart_data_array = new Array(db_data_sort_dates.length).fill(0);
 
-  let i = 0;
-  let sum = 0;
-  for (let date of db_data_sort_dates) {
-    for (let f of db_data_sort[0].features) {
-      if (f.properties.obsDate === date) {
-        chart_data_array[i] += 1;
-        sum +=1;
-      }
-    }
-    i++;
-  }
-  i = 0;
-  // console.log(labels);
-  // while (i <= inp) {
-  //   for (let f of chart_data) {
-  //     if (f.properties.obsDate === labels[i]) {
-  //       tlapse_chart_data_array[i] ++;
-  //     }
-  //   }
-  //   i++;
-  // }
-  let lebel;
-  if (inp === 1) {
-    document.getElementById('timelapse-text').innerHTML = `Day 1 : ${chart_data_array[0]} Obs`;
-    let date = db_data_sort_dates[0].split('T'); date = date[0];
-    label = " " + date + " : " + chart_data_array[0] + ' observations';
-  }else{
-    let date = db_data_sort_dates[inp].split('T'); date = date[0];
-    label = " " + date + " : " + chart_data_array[inp] + ' observations';
-  }
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: [],
-        data: [],
-        backgroundColor: "rgba(167, 95, 220, 0.4)",
-        borderColor: "#a75fdc",
-        borderWidth: 2,
-        tension: .2,
-        pointRadius: 0,
-        fill: 'origin'
-      },
-      {
-        label: "fixed data",
-        data: chart_data_array,
-        borderColor: "rgba(187, 185, 187, 0.83)",
-        borderWidth: 2,
-        tension: .2,
-        pointRadius: 0,
-        fill: 'origin'
-      }
-    ]
-  };
-
-  const option = {
-    //- next 2 lines for response chart
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-       legend: {
-          display: true,
-          labels: {
-            filter: (l) => (l.text !== 'fixed data'),
-            usePointStyle: true,
-            color:"#a75fdc",
-            font:{
-              family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-              size: 13,
-              weight: 'bold'
-
+    let i = 0;
+    let sum = 0;
+    for (let date of db_data_sort_dates) {
+        for (let f of db_data_sort[0].features) {
+            if (f.properties.obsDate === date) {
+                chart_data_array[i] += 1;
+                sum += 1;
             }
-          },
-          position: 'bottom'
-       },
-       tooltip:{
-            usePointStyle:true,
-            title: false,
-            intersect: false,
-            position: 'nearest',
-            rtl: true,
-            backgroundColor: "rgba(167, 95, 220, 0.66)",
-            fontSize: 14,
-            callbacks: {
-              label: (context)=> {
-                      let label = context.label.split("T");
-                      return label[0]  + " : " + context.dataset.data[context.dataIndex] + " obs    ";
-                    },
-              title : () => null,
-           },
-           filter: (context) => {
-             if (context.dataset.label === 'fixed data'){
-               return true;
-             }else {
-               return false;
-             }
-           },
-           font: {
-             family: 'Helvetica Neue',
-             color:"#a75fdc",
-             size: 14
-           }
         }
-    },
-    scales: {
-      xAxes: {
-        display: false,
-        grid: {
-          display: false
-        }
-      },
-      yAxes: {
-        display: true,
-        ticks: {
-            beginAtZero: false,
-            color: '#a75fdc'
-        },
-        grid: {
-          display: false
-        }
-      }
-    },
-    animation: {
-       duration: 0
-   }
-  };
-  document.querySelector('.chart-area').innerHTML = '<canvas  id="line-chart"></canvas>';
-  const ctx = document.getElementById('line-chart');
-  dChart = new Chart(ctx, {
-      type: "line",
-      data: data,
-      options: option
-  });
+        i++;
+    }
+    i = 0;
+    let lebel;
+    if (inp === 1) {
+        document.getElementById('timelapse-text').innerHTML = `Day 1 : ${chart_data_array[0]} Obs`;
+        let date = db_data_sort_dates[0].split('T');
+        date = date[0];
+        label = " " + date + " : " + chart_data_array[0] + ' observations';
+    } else {
+        let date = db_data_sort_dates[inp].split('T');
+        date = date[0];
+        label = " " + date + " : " + chart_data_array[inp] + ' observations';
+    }
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: [],
+            data: [],
+            backgroundColor: "rgba(167, 95, 220, 0.4)",
+            borderColor: "#a75fdc",
+            borderWidth: 2,
+            tension: .2,
+            pointRadius: 0,
+            fill: 'origin'
+        }, {
+            label: "fixed data",
+            data: chart_data_array,
+            borderColor: "rgba(187, 185, 187, 0.83)",
+            borderWidth: 2,
+            tension: .2,
+            pointRadius: 0,
+            fill: 'origin'
+        }]
+    };
 
-  updateChartData(inp, chart_data);
+    const option = {
+        //- next 2 lines for response chart
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: true,
+                labels: {
+                    filter: (l) => (l.text !== 'fixed data'),
+                    usePointStyle: true,
+                    color: "#a75fdc",
+                    font: {
+                        family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                        size: 13,
+                        weight: 'bold'
+
+                    }
+                },
+                position: 'bottom'
+            },
+            tooltip: {
+                usePointStyle: true,
+                title: false,
+                intersect: false,
+                position: 'nearest',
+                rtl: true,
+                backgroundColor: "rgba(167, 95, 220, 0.66)",
+                fontSize: 14,
+                callbacks: {
+                    label: (context) => {
+                        let label = context.label.split("T");
+                        return label[0] + " : " + context.dataset.data[context.dataIndex] + " obs    ";
+                    },
+                    title: () => null,
+                },
+                filter: (context) => {
+                    if (context.dataset.label === 'fixed data') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                font: {
+                    family: 'Helvetica Neue',
+                    color: "#a75fdc",
+                    size: 14
+                }
+            }
+        },
+        scales: {
+            xAxes: {
+                display: false,
+                grid: {
+                    display: false
+                }
+            },
+            yAxes: {
+                display: true,
+                ticks: {
+                    beginAtZero: false,
+                    color: '#a75fdc'
+                },
+                grid: {
+                    display: false
+                }
+            }
+        },
+        animation: {
+            duration: 0
+        }
+    };
+    document.querySelector('.chart-area').innerHTML = '<canvas  id="line-chart"></canvas>';
+    const ctx = document.getElementById('line-chart');
+    dChart = new Chart(ctx, {
+        type: "line",
+        data: data,
+        options: option
+    });
+
+    updateChartData(inp, chart_data);
 }
 
 const updateChartData = (inp, chart_data) => {
 
-  let tlapse_chart_data_array = new Array(inp+1).fill(0);
-  let i = 0;
-  while (i <= inp) {
-    for (let f of chart_data) {
-      if (f.properties.obsDate === db_data_sort_dates[i]) {
-        tlapse_chart_data_array[i] ++;
-      }
+    let tlapse_chart_data_array = new Array(inp + 1).fill(0);
+    let i = 0;
+    while (i <= inp) {
+        for (let f of chart_data) {
+            if (f.properties.obsDate === db_data_sort_dates[i]) {
+                tlapse_chart_data_array[i]++;
+            }
+        }
+        i++;
     }
-    i++;
-  }
-  let lebel;
-  if (tlapse_chart_data_array.length === 0) {
-    document.getElementById('timelapse-text').innerHTML = `Day 1 : ${tlapse_chart_data_array[0]} Obs`;
-    tlapse_chart_data_array = [0];
-    let date = db_data_sort_dates[0].split('T'); date = date[0];
-    label = " " + date + " : " + tlapse_chart_data_array[0] + ' observations'
-  }else{
-    let date = db_data_sort_dates[inp].split('T'); date = date[0];
-    label = " " + date + " : " + tlapse_chart_data_array[tlapse_chart_data_array.length-1] + ' observations';
-  }
-  dChart.data.datasets[0].data = tlapse_chart_data_array;
-  dChart.data.datasets[0].label = label;
-  dChart.update();
+    let lebel;
+    if (tlapse_chart_data_array.length === 0) {
+        document.getElementById('timelapse-text').innerHTML = `Day 1 : ${tlapse_chart_data_array[0]} Obs`;
+        tlapse_chart_data_array = [0];
+        let date = db_data_sort_dates[0].split('T');
+        date = date[0];
+        label = " " + date + " : " + tlapse_chart_data_array[0] + ' observations'
+    } else {
+        let date = db_data_sort_dates[inp].split('T');
+        date = date[0];
+        label = " " + date + " : " + tlapse_chart_data_array[tlapse_chart_data_array.length - 1] + ' observations';
+    }
+    dChart.data.datasets[0].data = tlapse_chart_data_array;
+    dChart.data.datasets[0].label = label;
+    dChart.update();
 }

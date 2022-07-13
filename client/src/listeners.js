@@ -49,14 +49,12 @@ document.getElementById('pause').addEventListener('click', () => {
  clearInterval(timeInterval);
  document.getElementById('pause').style.display = 'none';
  document.getElementById('play').style.display = 'block';
- // pauseTime();
 });
 document.getElementById('play').addEventListener('click', () => {
   timeVisualization();
   document.getElementById('play').style.display = 'none';
   document.getElementById('pause').style.display = 'block';
   document.getElementById('pause').style.disabled = false;
-  // startTime();
 });
 
 document.getElementById('stop').addEventListener('click', () => {

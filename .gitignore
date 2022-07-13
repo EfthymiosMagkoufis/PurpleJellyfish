@@ -1,2 +1,7 @@
 .env
 node_modules/
+client/src/final_data.json
+client/src/raw_data.json
+client/.atom-live-server.json
+client/load_data.js
+data2db/

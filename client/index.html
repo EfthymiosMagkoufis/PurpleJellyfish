@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-    <!-- <meta name="mobile-web-app-capable" content="yes"> -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>PurpleJellyfish</title>
     <link rel="icon" type="image/x-icon" href="./img/jellyfish_icon.ico">
@@ -86,10 +85,6 @@
               <textarea type="text" id="your-comment" name="y-com" placeholder="comment..."></textarea>
               <label id="date-label" for="y-date">Observation Date</label>
               <input type="date" id="your-date" name="y-date"></input>
-              <!-- <div class="choose_img">
-                  <span>Upoload an image <i class="fa fa-camera" aria-hidden="true"></i></span>
-                  <input name="Select img" type="file"  accept="image/*" id="img-upload"/>
-              </div> -->
               <button type="button" name="upload" id="upload-btn">Upload</button>
           </form>
         </div>
@@ -113,7 +108,7 @@
         <div class="info-content">
           PurpleJellyfish is an web-based geo-application that depicts the appearance of the purple jellyfish in the Greek seas. The data used was obtained from <a style="color:#a75fdb" class="about-links" href="https://www.inaturalist.org/" target="_blank"> Naturalist.org</a> as well as PurpleJellyfish users.
           The user has the ability to watch the spread of purple jellyfish in the Greek seas using the tool timelapse geovisualizations, as well as the ability to add personal observations about the appearance of purple jellyfish.
-          For the implementation of this website were used: node.js, express, postgreSQL and mapbox GL JS.
+          For the implementation of this website were used: node.js, express, postgreSQL, mapbox GL JS and ChartJS.
           <br><br>Developed by Magkoufis Efthymios, Rural and Survey Engineer - Geoinformatics Engineer of NTUA.
           <br>contact: <a  style="color:#a75fdb" href="mailto:themismagf@yahoo.gr">themismagf@yahoo.gr</a>
           <br><br>Copyright 2022 <i style="color:#a75fdb"  class="fa fa-copyright" aria-hidden="true"></i> Magkoufis Efthymios.  All rights reserved.
@@ -123,10 +118,8 @@
         </div>
       </div>
   </body>
-  <!-- <script src="./load_data.js"></script> -->
   <script src="./src/api.js"></script>
   <script src="./src/app.js"></script>
   <script src="./src/listeners.js"></script>
-  <script src="./src/cluster.js"></script>
-  <script src="./src/heatmap.js"></script>
+  <script src="./src/geovis.js"></script>
 </html>
