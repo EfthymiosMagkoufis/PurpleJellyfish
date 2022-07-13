@@ -19,9 +19,3 @@ https://purplejellyfish.herokuapp.com
 ## Authors
 
 [@EfthymiosMagkoufis](https://github.com/EfthymiosMagkoufis)
-
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
