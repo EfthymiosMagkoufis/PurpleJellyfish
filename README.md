@@ -18,7 +18,7 @@ https://purplejellyfish.herokuapp.com
 **Database:** PostgreSQL
 ## Authors
 
-- [@EfthymiosMagkoufis](https://github.com/EfthymiosMagkoufis)
+[@EfthymiosMagkoufis](https://github.com/EfthymiosMagkoufis)
 
 
 ## License
