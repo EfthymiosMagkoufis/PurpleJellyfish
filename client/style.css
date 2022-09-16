@@ -120,7 +120,7 @@ nav {
   box-shadow:  2px 3px 5px rgba(157, 15, 162, 0.14);
 }
 
-.nav-btns:hover, .select-btn:hover, #show-controlers-btn:hover, #close-controlers-btn:hover{
+.nav-btns:hover, .select-btn:hover, #show-controlers-btn:hover, #close-controlers-btn:hover, #show-chart-btn:hover{
   background-color:var(--purple-color);
   color: #f4f4f2;
   cursor: pointer;
@@ -703,7 +703,47 @@ h1#info-header{
   justify-content: center;
   align-items: center;
   z-index: 8;
+  transition: all 0.1s linear;
 }
+#chart-cls-btn{
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  font-size: 25px;
+  background: none;
+  border: none;
+  font-weight: 600;
+  border-radius: 50%;
+  color: var(--purple-color);
+  cursor: pointer;
+  z-index: 2;
+}
+
+#chart-cls-btn:hover{
+  background: var(--purple-color);
+  color: white;
+}
+#show-chart-btn{
+  position:absolute;
+  bottom: 60px;
+  left: 8px;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+  justify-content: center;
+  align-items: center;
+  align-content: space-around;
+  border: none;
+  background-color: #f4f4f2;
+  color: #a75fdc;
+  box-shadow: 0px 0px 9px 3px rgb(157 15 162 / 14%);
+  font-size: 18px;
+  visibility: hidden;
+}
+
 #line-chart{
   opacity: 1;
   position: relative;

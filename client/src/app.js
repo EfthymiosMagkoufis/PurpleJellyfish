@@ -470,15 +470,17 @@ const buildChart = (labels, inp, chart_data) => {
             duration: 0
         }
     };
-    document.querySelector('.chart-area').innerHTML = '<canvas  id="line-chart"></canvas>';
+    document.querySelector('.chart-area').innerHTML =
+    '<button type="button" id="chart-cls-btn">×</button>' +
+    '<canvas  id="line-chart"></canvas>';
     const ctx = document.getElementById('line-chart');
     dChart = new Chart(ctx, {
         type: "line",
         data: data,
         options: option
     });
-
     updateChartData(inp, chart_data);
+    closeChart();
 }
 
 const updateChartData = (inp, chart_data) => {

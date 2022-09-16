@@ -128,3 +128,19 @@ document.getElementById('close-controlers-btn').addEventListener("click", ()=>{
     document.querySelector('.fa.fa-chevron-up').style.visibility = 'hidden';
   }
 });
+
+const closeChart = () => {
+  document.getElementById('chart-cls-btn').addEventListener("click", ()=>{
+    let style = document.querySelector('.chart-area').style;
+    style.opacity = '0';
+    style.visibility = 'hidden';
+    document.getElementById('show-chart-btn').style.visibility = 'visible';
+  });
+}
+
+document.getElementById('show-chart-btn').addEventListener("click", ()=>{
+    let style = document.querySelector('.chart-area').style;
+    document.getElementById('show-chart-btn').style.visibility = 'hidden';
+    style.opacity = '1';
+    style.visibility = 'visible';
+});
